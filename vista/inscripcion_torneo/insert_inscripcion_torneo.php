@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="../assets/css/estyles.css">
     <link rel="stylesheet" href="../assets/css/general.css">
 </head>
+
 <body>
     <div class="page-container">
         <!-- SIDEBAR -->
@@ -27,19 +29,54 @@
             <nav class="menu">
                 <div class="section">PRINCIPAL</div>
                 <ul class="menu-list">
-                    <li class="menu-item" data-href="../loyaut/dashboard.html"><div class="icon"><i class="fas fa-tachometer-alt"></i></div><div class="label">Inicio</div></li>
-                    <li class="menu-item" data-href="../representantes/representante.html"><div class="icon"><i class="fas fa-users"></i></div><div class="label">Representantes</div></li>
-                    <li class="menu-item" data-href="../alumnos/alumno.html"><div class="icon"><i class="fas fa-user-graduate"></i></div><div class="label">Alumnos</div></li>
-                    <li class="menu-item" data-href="../entrenadores/entrenador.html"><div class="icon"><i class="fas fa-chalkboard-user"></i></div><div class="label">Entrenadores</div></li>
-                    <li class="menu-item" data-href="../especialidad/especialidad.html"><div class="icon"><i class="fas fa-chess-king"></i></div><div class="label">Especialidades</div></li>
-                    <li class="menu-item" data-href="../tipotorneo/tipotorneo.html"><div class="icon"><i class="fas fa-chess-queen"></i></div><div class="label">Tipos de Torneo</div></li>
-                    <li class="menu-item" data-href="../clases/clase.html"><div class="icon"><i class="fas fa-chess-board"></i></div><div class="label">Clases</div></li>
-                    <li class="menu-item" data-href="../horarios/horario.html"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div class="label">Horario Clases</div></li>
-                    <li class="menu-item" data-href="../torneos/torneo.html"><div class="icon"><i class="fas fa-trophy"></i></div><div class="label">Torneos</div></li>
-                    <li class="menu-item" data-href="../asistencias/asistencia.html"><div class="icon"><i class="fas fa-check"></i></div><div class="label">Asistencias</div></li>
+                    <li class="menu-item" data-href="../loyaut/dashboard.html">
+                        <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="label">Inicio</div>
+                    </li>
+                    <li class="menu-item" data-href="../representantes/representante.html">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="label">Representantes</div>
+                    </li>
+                    <li class="menu-item" data-href="../alumnos/alumno.html">
+                        <div class="icon"><i class="fas fa-user-graduate"></i></div>
+                        <div class="label">Alumnos</div>
+                    </li>
+                    <li class="menu-item" data-href="../entrenadores/entrenador.html">
+                        <div class="icon"><i class="fas fa-chalkboard-user"></i></div>
+                        <div class="label">Entrenadores</div>
+                    </li>
+                    <li class="menu-item" data-href="../especialidad/especialidad.html">
+                        <div class="icon"><i class="fas fa-chess-king"></i></div>
+                        <div class="label">Especialidades</div>
+                    </li>
+                    <li class="menu-item" data-href="../tipotorneo/tipotorneo.html">
+                        <div class="icon"><i class="fas fa-chess-queen"></i></div>
+                        <div class="label">Tipos de Torneo</div>
+                    </li>
+                    <li class="menu-item" data-href="../clases/clase.html">
+                        <div class="icon"><i class="fas fa-chess-board"></i></div>
+                        <div class="label">Clases</div>
+                    </li>
+                    <li class="menu-item" data-href="../horarios/horario.html">
+                        <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="label">Horario Clases</div>
+                    </li>
+                    <li class="menu-item" data-href="../torneos/torneo.html">
+                        <div class="icon"><i class="fas fa-trophy"></i></div>
+                        <div class="label">Torneos</div>
+                    </li>
+                    <li class="menu-item" data-href="../asistencias/asistencia.html">
+                        <div class="icon"><i class="fas fa-check"></i></div>
+                        <div class="label">Asistencias</div>
+                    </li>
                 </ul>
                 <div class="section">BÚSQUEDA</div>
-                <div style="padding-top:6px"><div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:40px;"><i class="fas fa-search" style="color:#7fcfe6"></i><span style="font-size:0.85rem;color:rgba(255,255,255,0.6)">Buscar inscripción...</span></div></div>
+                <div style="padding-top:6px">
+                    <div
+                        style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:40px;">
+                        <i class="fas fa-search" style="color:#7fcfe6"></i><span
+                            style="font-size:0.85rem;color:rgba(255,255,255,0.6)">Buscar inscripción...</span></div>
+                </div>
             </nav>
         </aside>
 
@@ -156,4 +193,5 @@
     <script src="../assets/js/validaciones_inscripcion_torneo.js"></script>
     <script src="../assets/js/sidebar.js"></script>
 </body>
+
 </html>

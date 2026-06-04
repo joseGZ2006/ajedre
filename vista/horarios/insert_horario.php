@@ -16,13 +16,13 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-plus-circle me-2"></i> Horario de Clase</h1>
-                <a href="./horario.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al
+                <a href="./horario.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al
                     catálogo</a>
             </div>
 
             <div class="form-card">
                 <form role="form" name="form" method="POST" onsubmit="return validarFormularioCompleto(event)"
-                    action="./horario.html">
+                    action="./horario.php">
                     <h3 class="section-title"><i class="fas fa-calendar-alt me-2"></i>Datos del Horario</h3>
                     <div class="row">
                         <div class="col-md-4 mb-3">

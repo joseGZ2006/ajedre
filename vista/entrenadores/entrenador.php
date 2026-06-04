@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-chalkboard-user me-2"></i> ENTRENADORES</h1>
-                <button class="btn btn-custom"><a href="./insert_entrenador.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Entrenador</a></button>
+                <button class="btn btn-custom"><a href="./insert_entrenador.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Entrenador</a></button>
             </div>
 
             <!-- TABLA DE ENTRENADORES -->
@@ -37,8 +37,8 @@
                             <td>Marcos</td>
                             <td>Pérez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="12345678" data-nombre="Marcos Pérez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -49,8 +49,8 @@
                             <td>Ana</td>
                             <td>Rodríguez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="87654321" data-nombre="Ana Rodríguez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -61,8 +61,8 @@
                             <td>Carlos</td>
                             <td>Martínez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="11223344" data-nombre="Carlos Martínez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -73,8 +73,8 @@
                             <td>Laura</td>
                             <td>Gómez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="99887766" data-nombre="Laura Gómez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

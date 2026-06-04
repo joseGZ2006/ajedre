@@ -19,7 +19,7 @@
                 <div class="catalog-header">
                     <h1 class="page-title"><i class="fas fa-chalkboard-user me-2"></i> Información del Entrenador</h1>
                 </div>
-                <a href="./entrenador.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
+                <a href="./entrenador.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 
             <div class="detail-avatar">

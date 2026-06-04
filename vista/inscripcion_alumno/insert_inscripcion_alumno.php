@@ -20,7 +20,7 @@
                 <h1 class="page-title">
                     <i class="fas fa-plus-circle me-2"></i> Registrar Inscripción de Alumno
                 </h1>
-                <a href="./inscripcion_alumno.html" class="btn btn-secondary">
+                <a href="./inscripcion_alumno.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
             </div>

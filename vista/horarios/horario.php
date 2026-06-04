@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-calendar-alt me-2"></i> GESTIÓN DE HORARIO DE CLASES</h1>
-                <button class="btn btn-custom"><a href="./insert_horario.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Horario</a></button>
+                <button class="btn btn-custom"><a href="./insert_horario.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Horario</a></button>
             </div>
 
             <!-- TABLA DE HORARIOS -->
@@ -43,8 +43,8 @@
                             <td>Aula 101</td>
                             <td>Marcos Pérez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_horario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_horario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-dia="Lunes" data-horario="09:00 AM - 11:00 AM">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -58,8 +58,8 @@
                             <td>Aula 102</td>
                             <td>Ana López</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_horario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_horario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="2" data-dia="Miércoles" data-horario="03:00 PM - 05:00 PM">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -73,8 +73,8 @@
                             <td>Aula 103</td>
                             <td>Carlos Ruiz</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_horario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_horario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="3" data-dia="Viernes" data-horario="06:00 PM - 08:00 PM">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -88,8 +88,8 @@
                             <td>Aula 101</td>
                             <td>Marcos Pérez</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_horario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_horario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_horario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="4" data-dia="Sábado" data-horario="10:00 AM - 12:00 PM">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

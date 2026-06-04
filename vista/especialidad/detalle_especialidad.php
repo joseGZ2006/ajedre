@@ -23,7 +23,7 @@
                 </h1>
             </div>
 
-            <a href="./especialidad.html" class="btn btn-secondary">
+            <a href="./especialidad.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Volver al catálogo
             </a>
         </div>

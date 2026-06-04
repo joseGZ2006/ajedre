@@ -19,7 +19,7 @@
                 <h1 class="page-title">
                     <i class="fas fa-edit me-2"></i> Editar Puntuación de Test
                 </h1>
-                <a href="./puntuacion_test.html" class="btn btn-secondary">
+                <a href="./puntuacion_test.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
             </div>

@@ -19,7 +19,7 @@
                 <h1 class="page-title">
                     <i class="fas fa-plus-circle me-2"></i> Registrar Usuario
                 </h1>
-                <a href="./usuario.html" class="btn btn-secondary">
+                <a href="./usuario.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
             </div>

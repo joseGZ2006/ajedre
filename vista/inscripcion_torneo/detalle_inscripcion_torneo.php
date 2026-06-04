@@ -21,7 +21,7 @@
                     <i class="fas fa-info-circle me-2"></i> Detalle de Inscripción a Torneo
                 </h1>
             </div>
-            <a href="./inscripcion_torneo.html" class="btn btn-secondary">
+            <a href="./inscripcion_torneo.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Volver al catálogo
             </a>
         </div>

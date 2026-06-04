@@ -21,7 +21,7 @@
                     <i class="fas fa-info-circle me-2"></i> Detalle de Inscripción
                 </h1>
             </div>
-            <a href="./inscripcion_alumno.html" class="btn btn-secondary">
+            <a href="./inscripcion_alumno.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Volver al catálogo
             </a>
         </div>

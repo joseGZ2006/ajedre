@@ -20,7 +20,7 @@
             </div>
 
             <div class="form-card">
-                <form role="form" name="form" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./entrenador.html">
+                <form role="form" name="form" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./entrenador.php">
                     <h3 class="section-title"><i class="fas fa-chalkboard-user me-2"></i>Datos del Entrenador</h3>
                     <div class="row">
                         <div class="col-md-4 mb-3">

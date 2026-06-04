@@ -16,11 +16,11 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-trophy me-2"></i> Editar Torneo</h1>
-                <a href="./torneo.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
+                <a href="./torneo.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 
             <div class="form-card">
-                <form role="form" name="form" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./torneo.html">
+                <form role="form" name="form" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./torneo.php">
                     <input type="hidden" name="idTorneo" id="idTorneo" value="1">
                     <h3 class="section-title"><i class="fas fa-chess-queen me-2"></i>Datos del Torneo</h3>
                     <div class="row">

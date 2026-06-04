@@ -22,7 +22,7 @@
             </h1>
 
             <button class="btn btn-custom">
-                <a href="./insert_tipotorneo.html">
+                <a href="./insert_tipotorneo.php">
                     <i class="fas fa-plus-circle me-2"></i> Nuevo Tipo de Torneo
                 </a>
             </button>

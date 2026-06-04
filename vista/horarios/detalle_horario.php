@@ -19,7 +19,7 @@
                 <div class="catalog-header">
                     <h1 class="page-title"><i class="fas fa-calendar-alt me-2"></i> Información del Horario de Clase</h1>
                 </div>
-                <a href="./horario.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
+                <a href="./horario.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 
             <div class="detail-avatar">

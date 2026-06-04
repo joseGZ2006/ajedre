@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-users-cog me-2"></i> GESTIÓN DE USUARIOS</h1>
-                <button class="btn btn-custom"><a href="./insert_usuario.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Usuario</a></button>
+                <button class="btn btn-custom"><a href="./insert_usuario.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Usuario</a></button>
             </div>
 
             <!-- TABLA DE USUARIOS -->
@@ -39,8 +39,8 @@
                             <td><span class="badge bg-primary">Admin</span></td>
                             <td><span class="badge bg-success">Activo</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_usuario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_usuario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Lagea111">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -52,8 +52,8 @@
                             <td><span class="badge bg-info">Entrenador</span></td>
                             <td><span class="badge bg-success">Activo</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_usuario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_usuario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="2" data-nombre="marcos_perez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -65,8 +65,8 @@
                             <td><span class="badge bg-secondary">Alumno</span></td>
                             <td><span class="badge bg-danger">Inactivo</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_usuario.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_usuario.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_usuario.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="3" data-nombre="juan_perez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

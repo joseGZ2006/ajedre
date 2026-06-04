@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-users me-2"></i> GESTIÓN DE REPRESENTANTES</h1>
-                <button class="btn btn-custom"><a href="./insert_representante.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Representante</a></button>
+                <button class="btn btn-custom"><a href="./insert_representante.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Representante</a></button>
             </div>
 
             <!-- TABLA DE REPRESENTANTES -->
@@ -40,7 +40,7 @@
                                 <button type="button" class="btn btn-sm btn-info btn-view-modal" data-bs-toggle="modal" data-bs-target="#representanteDetailModal" data-cedula="12345678" data-nombre="María Pérez" data-telefono="0412-1234567">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <a class="btn btn-sm btn-primary" href="./edit_representante.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_representante.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="12345678" data-nombre="María Pérez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -54,7 +54,7 @@
                                 <button type="button" class="btn btn-sm btn-info btn-view-modal" data-bs-toggle="modal" data-bs-target="#representanteDetailModal" data-cedula="87654321" data-nombre="Carlos Rodríguez" data-telefono="0416-9876543">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <a class="btn btn-sm btn-primary" href="./edit_representante.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_representante.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="87654321" data-nombre="Carlos Rodríguez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -68,7 +68,7 @@
                                 <button type="button" class="btn btn-sm btn-info btn-view-modal" data-bs-toggle="modal" data-bs-target="#representanteDetailModal" data-cedula="11223344" data-nombre="Ana Martínez" data-telefono="0424-5566778">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <a class="btn btn-sm btn-primary" href="./edit_representante.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_representante.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="11223344" data-nombre="Ana Martínez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

@@ -21,7 +21,7 @@
                 <i class="fas fa-edit me-2"></i> Editar Tipo de Torneo
             </h1>
 
-            <a href="./tipotorneo.html" class="btn btn-secondary">
+            <a href="./tipotorneo.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i> Volver
             </a>
         </div>

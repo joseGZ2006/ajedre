@@ -19,7 +19,7 @@
                 <h1 class="page-title">
                     <i class="fas fa-edit me-2"></i> Editar Inscripción de Torneo
                 </h1>
-                <a href="./inscripcion_torneo.html" class="btn btn-secondary">
+                <a href="./inscripcion_torneo.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
             </div>

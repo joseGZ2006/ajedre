@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-trophy me-2"></i> TORNEOS</h1>
-                <button class="btn btn-custom"><a href="./insert_torneo.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Torneo</a></button>
+                <button class="btn btn-custom"><a href="./insert_torneo.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Torneo</a></button>
             </div>
 
             <!-- TABLA DE TORNEOS -->
@@ -39,8 +39,8 @@
                             <td>Próximo</td>
                             <td>Abierta</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_torneo.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_torneo.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Torneo Nacional de Ajedrez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -52,8 +52,8 @@
                             <td>Próximo</td>
                             <td>Sub-12</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_torneo.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_torneo.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="2" data-nombre="Torneo Blitz Navideño">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -65,8 +65,8 @@
                             <td>Finalizado</td>
                             <td>Sub-18</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_torneo.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_torneo.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_torneo.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="3" data-nombre="Torneo Rápido de Primavera">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

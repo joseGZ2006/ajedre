@@ -21,7 +21,7 @@
                     <i class="fas fa-plus-circle me-2"></i> Registrar Especialidad
                 </h1>
 
-                <a href="./especialidad.html" class="btn btn-secondary">
+                <a href="./especialidad.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
             </div>

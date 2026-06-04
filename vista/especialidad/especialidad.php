@@ -22,7 +22,7 @@
             </h1>
 
             <button class="btn btn-custom">
-                <a href="./insert_especialidad.html">
+                <a href="./insert_especialidad.php">
                     <i class="fas fa-plus-circle me-2"></i> Nueva Especialidad
                 </a>
             </button>
@@ -44,8 +44,8 @@
                     <tr>
                         <td>Aperturas de Ajedrez</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-nombre="Aperturas de Ajedrez">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -55,8 +55,8 @@
                     <tr>
                         <td>Estrategia Posicional</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-nombre="Estrategia Posicional">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -66,8 +66,8 @@
                     <tr>
                         <td>Táctica y Cálculo</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-nombre="Táctica y Cálculo">
                                 <i class="fas fa-trash-alt"></i>
                             </button>

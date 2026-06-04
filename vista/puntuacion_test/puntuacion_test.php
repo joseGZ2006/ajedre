@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-chess-board me-2"></i> PUNTUACIONES DE TEST</h1>
-                <button class="btn btn-custom"><a href="./insert_puntuacion_test.html"><i class="fas fa-plus-circle me-2"></i>Nueva Puntuación</a></button>
+                <button class="btn btn-custom"><a href="./insert_puntuacion_test.php"><i class="fas fa-plus-circle me-2"></i>Nueva Puntuación</a></button>
             </div>
 
             <!-- TABLA DE PUNTUACIONES -->
@@ -43,8 +43,8 @@
                             <td>4.50</td>
                             <td>9.00</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_puntuacion_test.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_puntuacion_test.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_puntuacion_test.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_puntuacion_test.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-asignacion="Asignación #1">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -58,8 +58,8 @@
                             <td>3.75</td>
                             <td>7.50</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_puntuacion_test.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_puntuacion_test.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_puntuacion_test.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_puntuacion_test.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="2" data-asignacion="Asignación #2">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

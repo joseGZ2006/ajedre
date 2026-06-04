@@ -21,7 +21,7 @@
                     <i class="fas fa-info-circle me-2"></i> Detalle de Puntuación de Test
                 </h1>
             </div>
-            <a href="./puntuacion_test.html" class="btn btn-secondary">
+            <a href="./puntuacion_test.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Volver al catálogo
             </a>
         </div>

@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-user-plus me-2"></i> INSCRIPCIONES DE ALUMNOS</h1>
-                <button class="btn btn-custom"><a href="./insert_inscripcion_alumno.html"><i class="fas fa-plus-circle me-2"></i>Nueva Inscripción</a></button>
+                <button class="btn btn-custom"><a href="./insert_inscripcion_alumno.php"><i class="fas fa-plus-circle me-2"></i>Nueva Inscripción</a></button>
             </div>
 
             <!-- TABLA DE INSCRIPCIONES -->
@@ -39,8 +39,8 @@
                             <td>03/06/2026</td>
                             <td><span class="badge bg-success">Activo</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_inscripcion_alumno.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_inscripcion_alumno.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_inscripcion_alumno.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_inscripcion_alumno.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Juan Pérez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

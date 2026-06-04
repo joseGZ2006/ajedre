@@ -19,7 +19,7 @@
                 <div class="catalog-header">
                     <h1 class="page-title"><i class="fas fa-trophy me-2"></i> Información del Torneo</h1>
                 </div>
-                <a href="./torneo.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
+                <a href="./torneo.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 
             <div class="detail-avatar">

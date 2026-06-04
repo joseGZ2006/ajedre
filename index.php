@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="mt-2 mt-sm-0">
-            <a href="./vista/loyaut/login.html" class="btn-login-nav">🔐 Iniciar Sesión</a>
+            <a href="./vista/loyaut/login.php" class="btn-login-nav">🔐 Iniciar Sesión</a>
         </div>
     </div>
 

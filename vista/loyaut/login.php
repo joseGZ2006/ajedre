@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa del Ajedrez - Iniciar Sesión</title>
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo1.png">
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
-    <!-- CSS separado para el login -->
+    <?php include '../assets/inc/head.php'; ?>
+
     <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body>
@@ -24,7 +19,7 @@
             </div>
             
             <div class="login-body">
-                <form id="loginForm" method="post" action="./dashboard.html">
+                <form id="loginForm" method="post" action="./dashboard.php">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>

@@ -62,7 +62,7 @@
 
             </div>
 
-            <a id="btnRegistrar" href="insert_asistenciaentrenador.html" class="btn btn-custom">
+            <a id="btnRegistrar" href="insert_asistenciaentrenador.php" class="btn btn-custom">
                 <i class="fas fa-plus-circle me-2"></i> Nueva Asistencia
             </a>
 
@@ -175,13 +175,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if(tipo === "entrenador"){
             tablaEntrenador.style.display = "block";
             tablaAlumno.style.display = "none";
-            btn.href = "insert_asistenciaentrenador.html";
+            btn.href = "insert_asistenciaentrenador.php";
         }
 
         if(tipo === "alumno"){
             tablaEntrenador.style.display = "none";
             tablaAlumno.style.display = "block";
-            btn.href = "insert_asistenciaalumnos.html";
+            btn.href = "insert_asistenciaalumnos.php";
         }
     }
 

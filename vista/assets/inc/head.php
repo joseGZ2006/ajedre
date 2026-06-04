@@ -7,3 +7,8 @@
     <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
     <link rel="stylesheet" href="../assets/css/estyles.css">
     <link rel="stylesheet" href="../assets/css/general.css">
+    <link rel="stylesheet" href="../assets/js/datatables/datatables.min.css">
+    
+
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/datatables-init.js"></script>

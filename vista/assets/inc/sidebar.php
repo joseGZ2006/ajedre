@@ -21,7 +21,7 @@
                     <li class="menu-item" data-href="../clases/clase.php"><div class="icon"><i class="fas fa-chess-board"></i></div><div class="label">Clases</div></li>
                     <li class="menu-item" data-href="../horarios/horario.php"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div class="label">Horario Clases</div></li>
                     <li class="menu-item" data-href="../torneos/torneo.php"><div class="icon"><i class="fas fa-trophy"></i></div><div class="label">Torneos</div></li>
-                    <li class="menu-item" data-href="./asistencia.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Asistencia</div></li>
+                    <li class="menu-item" data-href="../asistencias/asistencia.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Asistencia</div></li>
                     <li class="menu-item" data-href="../inscripcion_torneo/inscripcion_torneo.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Inscripciones Torneo</div></li>
                     <li class="menu-item" data-href="../usuarios/usuario.php"><div class="icon"><i class="fas fa-user"></i></div><div class="label">Usuarios</div></li>
                     <li class="menu-item" data-href="../inscripcion_alumno/inscripcion_alumno.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Inscripciones Alumno</div></li>
@@ -30,4 +30,5 @@
                 <div style="padding-top:6px"><div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:40px;"><i class="fas fa-search" style="color:#7fcfe6"></i><span style="font-size:0.85rem;color:rgba(255,255,255,0.6)">Buscar clase...</span></div></div>
             </nav>
         </aside>
-         <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+

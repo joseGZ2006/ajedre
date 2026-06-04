@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-ranking-star me-2"></i> CLASIFICACIÓN FINAL DE TORNEOS</h1>
-                <button class="btn btn-custom"><a href="./insert_clasificacion_final.html"><i
+                <button class="btn btn-custom"><a href="./insert_clasificacion_final.php"><i
                             class="fas fa-plus-circle me-2"></i>Nueva Clasificación</a></button>
             </div>
 
@@ -45,9 +45,9 @@
                             <td>Libertador</td>
                             <td><span class="badge bg-success">Clasificado</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=1"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=1"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=1"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=1"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="1"
                                     data-nombre="Carlos Pérez - Torneo Nacional">
@@ -64,9 +64,9 @@
                             <td>Chacao</td>
                             <td><span class="badge bg-success">Clasificado</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=2"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=2"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=2"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=2"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="2"
                                     data-nombre="Ana Rodríguez - Torneo Nacional">
@@ -83,9 +83,9 @@
                             <td>Baruta</td>
                             <td><span class="badge bg-success">Clasificado</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=3"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=3"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=3"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=3"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="3"
                                     data-nombre="Luis Fernández - Torneo Nacional">
@@ -102,9 +102,9 @@
                             <td>Municipio Sucre</td>
                             <td><span class="badge bg-success">Clasificado</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=4"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=4"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=4"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=4"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="4"
                                     data-nombre="María González - Regional Centro">
@@ -121,9 +121,9 @@
                             <td>Municipio Sucre</td>
                             <td><span class="badge bg-warning">Suplente</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=5"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=5"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=5"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=5"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="5"
                                     data-nombre="José Martínez - Regional Centro">
@@ -140,9 +140,9 @@
                             <td>Libertador</td>
                             <td><span class="badge bg-danger">Eliminado</span></td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.html?id=6"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_clasificacion_final.php?id=6"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.html?id=6"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_clasificacion_final.php?id=6"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="6"
                                     data-nombre="Valentina Rojas - Torneo Nacional">

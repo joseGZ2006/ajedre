@@ -16,13 +16,13 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-edit me-2"></i> Editar Clasificación Final</h1>
-                <a href="./clasificacion_final.html" class="btn btn-secondary"><i
+                <a href="./clasificacion_final.php" class="btn btn-secondary"><i
                         class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 
             <div class="form-card">
                 <form role="form" name="form" method="POST" onsubmit="return validarEditarClasificacion(event)"
-                    action="./clasificacion_final.html">
+                    action="./clasificacion_final.php">
                     <input type="hidden" name="idClasificacionFinal" id="idClasificacionFinal" value="1">
 
                     <h3 class="section-title"><i class="fas fa-ranking-star me-2"></i>Datos de la Clasificación</h3>

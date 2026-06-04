@@ -17,7 +17,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-chess-queen me-2"></i> ALUMNOS</h1>
-                <button class="btn btn-custom" ><a href="./insert_alumno.html"><i class="fas fa-plus-circle me-2"></i>Nuevo Alumno</a></button>
+                <button class="btn btn-custom" ><a href="./insert_alumno.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Alumno</a></button>
             </div>
 
             <!-- TABLA DE ALUMNOS -->
@@ -39,8 +39,8 @@
                             <td>15/03/2005</td>
                             <td>Masculino</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_alumno.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_alumno.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_alumno.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_alumno.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="12345678" data-nombre="Juan Pérez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -52,8 +52,8 @@
                             <td>15/03/2005</td>
                             <td>Masculino</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_alumno.html"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_alumno.html"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-secondary" href="./detalle_alumno.php"><i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm btn-primary" href="./edit_alumno.php"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="12345678" data-nombre="Juan Pérez">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

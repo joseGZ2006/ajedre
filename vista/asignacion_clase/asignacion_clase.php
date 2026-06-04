@@ -18,7 +18,7 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-user-plus me-2"></i> ASIGNACIONES DE CLASE</h1>
-                <button class="btn btn-custom"><a href="./insert_asignacion_clase.html"><i
+                <button class="btn btn-custom"><a href="./insert_asignacion_clase.php"><i
                             class="fas fa-plus-circle me-2"></i>Nueva Asignación</a></button>
             </div>
 
@@ -46,9 +46,9 @@
                             <td>2025-01-15</td>
                             <td>2025-06-30</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.html?id=101"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.php?id=101"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.html?id=101"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.php?id=101"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="101"
                                     data-nombre="Carlos Pérez - Marcos Pérez">
@@ -65,9 +65,9 @@
                             <td>2025-02-01</td>
                             <td>2025-07-15</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.html?id=102"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.php?id=102"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.html?id=102"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.php?id=102"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="102"
                                     data-nombre="Ana Rodríguez - Laura Gómez">
@@ -84,9 +84,9 @@
                             <td>2025-01-20</td>
                             <td>2025-05-20</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.html?id=103"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.php?id=103"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.html?id=103"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.php?id=103"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="103"
                                     data-nombre="Luis Fernández - Marcos Pérez">
@@ -103,9 +103,9 @@
                             <td>2025-03-01</td>
                             <td>2025-08-31</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.html?id=104"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.php?id=104"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.html?id=104"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.php?id=104"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="104"
                                     data-nombre="María González - Carlos Rojas">
@@ -122,9 +122,9 @@
                             <td>2025-02-10</td>
                             <td>(Activo)</td>
                             <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.html?id=105"><i
+                                <a class="btn btn-sm btn-secondary" href="./detalle_asignacion_clase.php?id=105"><i
                                         class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.html?id=105"><i
+                                <a class="btn btn-sm btn-primary" href="./edit_asignacion_clase.php?id=105"><i
                                         class="fas fa-edit"></i></a>
                                 <button class="btn btn-sm btn-danger btn-delete" data-id="105"
                                     data-nombre="José Martínez - Laura Gómez">

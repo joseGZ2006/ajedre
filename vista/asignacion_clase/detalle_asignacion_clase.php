@@ -19,7 +19,7 @@
                 <div class="catalog-header">
                     <h1 class="page-title"><i class="fas fa-user-plus me-2"></i> Información de la Asignación</h1>
                 </div>
-                <a href="./asignacion_clase.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver
+                <a href="./asignacion_clase.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver
                     al catálogo</a>
             </div>
 

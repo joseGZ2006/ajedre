@@ -20,7 +20,7 @@
                     <h1 class="page-title"><i class="fas fa-ranking-star me-2"></i> Información de Clasificación Final
                     </h1>
                 </div>
-                <a href="./clasificacion_final.html" class="btn btn-secondary"><i
+                <a href="./clasificacion_final.php" class="btn btn-secondary"><i
                         class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
             </div>
 

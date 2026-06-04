@@ -17,13 +17,13 @@
         <div class="main-content">
             <div class="catalog-header">
                 <h1 class="page-title"><i class="fas fa-edit me-2"></i> Editar Asignación de Clase</h1>
-                <a href="./asignacion_clase.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver
+                <a href="./asignacion_clase.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver
                     al catálogo</a>
             </div>
 
             <div class="form-card">
                 <form role="form" name="form" method="POST" onsubmit="return validarEditarAsignacion(event)"
-                    action="./asignacion_clase.html">
+                    action="./asignacion_clase.php">
                     <input type="hidden" name="idAsignacionClase" id="idAsignacionClase" value="101">
 
                     <h3 class="section-title"><i class="fas fa-user-plus me-2"></i>Datos de la Asignación</h3>

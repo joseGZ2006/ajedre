@@ -23,7 +23,7 @@
                 Detalle Asistencia Entrenador
             </h1>
 
-            <a href="./asistencia.html" class="btn btn-secondary">
+            <a href="./asistencia.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i> Volver
             </a>
         </div>

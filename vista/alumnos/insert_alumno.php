@@ -13,21 +13,16 @@
     <!-- HEADER -->
     <?php include '../assets/inc/header.php'; ?>
 
-    <!-- main -->
     <div class="main-content">
-
         <div class="catalog-header">
             <h1 class="page-title">
                 <i class="fas fa-user-plus me-2"></i>Registrar Nuevo Alumno
             </h1>
-            <a href="./alumno.html" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
+            <a href="./alumno.php" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al catálogo</a>
         </div>
 
-        <!-- CARD -->
         <div class="form-card">
-
-            <form id="formAlumno" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./alumno.html">
-
+            <form id="formAlumno" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./alumno.php">
                 <!-- DATOS PERSONALES -->
                 <h3 class="section-title">
                     <i class="fas fa-user me-2"></i>
@@ -37,19 +32,19 @@
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Cédula</label>
-                        <input type="text" class="form-control" id="cedula" maxlength="10" placeholder="Ingrese la cédula (10 dígitos)">
+                        <input type="text" class="form-control" id="cedula" maxlength="8" placeholder="Ej: 12345678">
                         <div class="invalid-feedback-real" id="cedulaFeedback"></div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre">
+                        <input type="text" class="form-control" id="nombre" maxlength="25" placeholder="Ingrese el nombre">
                         <div class="invalid-feedback-real" id="nombreFeedback"></div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Apellido</label>
-                        <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido">
+                        <input type="text" class="form-control" id="apellido" maxlength="25" placeholder="Ingrese el apellido">
                         <div class="invalid-feedback-real" id="apellidoFeedback"></div>
                     </div>
 
@@ -73,9 +68,7 @@
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Fecha Nacimiento</label>
                         <input type="date" class="form-control" id="fechaNacimiento" 
-                            placeholder="AAAA-MM-DD" 
-                            min="1900-01-01" 
-                            max="2024-12-31"
+                            min="1900-01-01" max="2024-12-31"
                             onchange="calcularCategoriaPorEdad()">
                         <div class="invalid-feedback-real" id="fechaNacimientoFeedback"></div>
                     </div>
@@ -97,18 +90,16 @@
                         <div class="invalid-feedback-real" id="categoriaFeedback"></div>
                     </div>
 
-                   
-
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" placeholder="0412-1234567">
+                        <input type="tel" class="form-control" id="telefono" maxlength="11" placeholder="04121234567">
                         <div class="invalid-feedback-real" id="telefonoFeedback"></div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label required-star">Localidad</label>
+                        <label class="form-label required-star">Localidad (Municipio)</label>
                         <select class="form-select" id="localidad">
                             <option value="">Seleccionar localidad</option>
                             <option>San Felipe</option><option>Independencia</option><option>Chivacoa</option>
@@ -120,33 +111,31 @@
                
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com">
+                        <input type="email" class="form-control" id="correo" maxlength="30" placeholder="ejemplo@correo.com">
                         <div class="invalid-feedback-real" id="correoFeedback"></div>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Club</label>
-                        <input type="text" class="form-control" id="club" placeholder="Club de ajedrez">
+                        <input type="text" class="form-control" id="club" maxlength="30" placeholder="Club de ajedrez">
                     </div>
                 </div>
 
-                <!-- DIRECCION parametrizada -->
+                <!-- DIRECCIÓN -->
                 <h3 class="section-title mt-3">
                     <i class="fas fa-map-marker-alt me-2"></i>
                     Dirección
                 </h3>
 
-                
-
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label class="form-label required-star">Dirección </label>
-                        <input type="text" class="form-control" id="direccion" placeholder="Ingrese la dirección completa">
+                        <label class="form-label required-star">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" maxlength="30" placeholder="Ingrese la dirección completa">
                         <div class="invalid-feedback-real" id="direccionFeedback"></div>
                     </div>
                 </div>
 
-                <!-- ESTUDIA -->
+                <!-- INFORMACIÓN ACADÉMICA -->
                 <h3 class="section-title mt-3">
                     <i class="fas fa-book me-2"></i>
                     Información Académica
@@ -154,7 +143,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label required-star">¿Estudia? </label>
+                        <label class="form-label required-star">¿Estudia?</label>
                         <div class="d-flex gap-4 mt-2">
                             <div>
                                 <input type="radio" name="estudia" id="estudiaSi" value="Si" onchange="toggleCamposEstudio()">
@@ -172,20 +161,20 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Institución</label>
-                            <input type="text" class="form-control" id="dondeEstudia" placeholder="Nombre de la institución">
+                            <input type="text" class="form-control" id="dondeEstudia" maxlength="30" placeholder="Nombre de la institución">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Grado</label>
-                            <input type="text" class="form-control" id="grado" placeholder="Ej: 5to grado">
+                            <input type="text" class="form-control" id="grado" maxlength="20" placeholder="Ej: 5to grado">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Sección</label>
-                            <input type="text" class="form-control" id="seccion" placeholder="Ej: A">
+                            <input type="text" class="form-control" id="seccion" maxlength="10" placeholder="Ej: A">
                         </div>
                     </div>
                 </div>
 
-                <!-- PRACTICA DEPORTE -->
+                <!-- DEPORTE -->
                 <h3 class="section-title mt-3">
                     <i class="fas fa-futbol me-2"></i>
                     Actividad Deportiva
@@ -193,7 +182,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label required-star">¿Practica algún deporte? </label>
+                        <label class="form-label required-star">¿Practica algún deporte?</label>
                         <div class="d-flex gap-4 mt-2">
                             <div>
                                 <input type="radio" name="practicaDeporte" id="deporteSi" value="Si" onchange="toggleCamposDeporte()">
@@ -210,17 +199,17 @@
                 <div id="camposDeporte" style="display:none;">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Deporte que practica</label>
-                            <input type="text" class="form-control" id="deporte" placeholder="Nombre del deporte">
+                            <label class="form-label">Deporte</label>
+                            <input type="text" class="form-control" id="deporte" maxlength="25" placeholder="Nombre del deporte">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Control Inicio Deportivo</label>
-                            <input type="text" class="form-control" id="controlInicioDeportivo" placeholder="Institución donde inició">
+                            <input type="text" class="form-control" id="controlInicioDeportivo" maxlength="30" placeholder="Institución donde inició">
                         </div>
                     </div>
                 </div>
 
-                <!-- REPRESENTANTE (se muestra solo si es menor de edad) -->
+                <!-- REPRESENTANTE (solo menores) -->
                 <div id="representanteContainer" style="display:none;">
                     <h3 class="section-title mt-3">
                         <i class="fas fa-users me-2"></i>
@@ -260,9 +249,7 @@
                 </div>
 
             </form>
-
         </div>
-
     </div>
 
     <!-- MODAL PARA AGREGAR REPRESENTANTE -->
@@ -282,29 +269,26 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label required-star">Nombre</label>
-                        <input type="text" class="form-control" id="modalRepNombre" placeholder="Nombre">
+                        <input type="text" class="form-control" id="modalRepNombre" maxlength="25" placeholder="Nombre">
                     </div>
                     <div class="mb-3">
                         <label class="form-label required-star">Apellido</label>
-                        <input type="text" class="form-control" id="modalRepApellido" placeholder="Apellido">
+                        <input type="text" class="form-control" id="modalRepApellido" maxlength="25" placeholder="Apellido">
                     </div>
                     <div class="mb-3">
                         <label class="form-label required-star">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="modalRepCorreo" placeholder="Correo electrónico">
+                        <input type="email" class="form-control" id="modalRepCorreo" maxlength="30" placeholder="Correo electrónico">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="modalRepTelefono" placeholder="0412-1234567">
+                        <input type="tel" class="form-control" id="modalRepTelefono" maxlength="11" placeholder="04121234567">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Parentesco</label>
                         <select class="form-select" id="modalRepParentesco">
                             <option value="">Seleccionar parentesco</option>
-                            <option>Padre</option>
-                            <option>Madre</option>
-                            <option>Tutor</option>
-                            <option>Abuelo</option>
-                            <option>Hermano</option>
+                            <option>Padre</option><option>Madre</option><option>Tutor</option>
+                            <option>Abuelo</option><option>Hermano</option>
                         </select>
                     </div>
                 </div>
@@ -319,7 +303,6 @@
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sweetalert2.all.min.js"></script>
-    
     <script src="../assets/js/represent_alumno.js"></script>
     <script src="../assets/js/validaciones_alumno.js"></script>
 

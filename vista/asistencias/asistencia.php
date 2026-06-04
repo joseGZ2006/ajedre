@@ -85,8 +85,8 @@
                     <tr>
                         <td>José Pérez</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaentrenador.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaentrenador.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaentrenador.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaentrenador.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Ajedrez Básico">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -96,8 +96,8 @@
                     <tr>
                         <td>María Gómez</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaentrenador.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaentrenador.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaentrenador.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaentrenador.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Ajedrez Básico">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -127,8 +127,8 @@
                     <tr>
                         <td>Carlos Ruiz</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaalumnos.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaalumnos.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaalumnos.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaalumnos.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Ajedrez Básico">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
@@ -138,8 +138,8 @@
                     <tr>
                         <td>Laura Díaz</td>
                         <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaalumnos.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaalumnos.html"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-secondary" href="./detalle_asistenciaalumnos.php"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-primary" href="./edit_asistenciaalumnos.php"><i class="fas fa-edit"></i></a>
                             <button class="btn btn-sm btn-danger btn-delete" data-id="1" data-nombre="Ajedrez Básico">
                                 <i class="fas fa-trash-alt"></i>
                             </button>

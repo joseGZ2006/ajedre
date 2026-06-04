@@ -18,7 +18,7 @@
                     <li class="menu-item" data-href="../entrenadores/entrenador.php"><div class="icon"><i class="fas fa-chalkboard-user"></i></div><div class="label">Entrenadores</div></li>
                     <li class="menu-item" data-href="../especialidad/especialidad.php"><div class="icon"><i class="fas fa-book"></i></div><div class="label">Especialidades</div></li>
                     <li class="menu-item" data-href="../tipotorneo/tipotorneo.php"><div class="icon"><i class="fas fa-list"></i></div><div class="label">Tipos de Torneo</div></li>
-                   <!-- <li class="menu-item" data-href="../clases/clase.php"><div class="icon"><i class="fas fa-chess-board"></i></div><div class="label">Clases</div></li> -->
+                    <li class="menu-item" data-href="../asignacion_clase/asignacion_clase.php"><div class="icon"><i class="fas fa-chess-board"></i></div><div class="label">Asignación Clases</div></li>
                     <li class="menu-item" data-href="../horarios/horario.php"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div class="label">Horario Clases</div></li>
                     <li class="menu-item" data-href="../torneos/torneo.php"><div class="icon"><i class="fas fa-trophy"></i></div><div class="label">Torneos</div></li>
                     <li class="menu-item" data-href="../asistencias/asistencia.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Asistencia</div></li>

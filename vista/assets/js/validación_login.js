@@ -29,23 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
         input.style.borderColor = '#dc2626';
     }
 
-    // FUNCIÓN: Marcar campo como válido
-    function showFieldValid(input, errorElement) {
-        errorElement.textContent = '✓ Campo válido';
-        errorElement.style.color = '#0f766e';
-        errorElement.style.fontSize = '12px';
-        errorElement.style.marginTop = '5px';
-        input.style.backgroundColor = '#ecfdf5';
-        input.style.borderColor = '#22c55e';
-    }
+    
 
-    // FUNCIÓN: Limpiar validación del campo
-    function clearFieldValidation(input, errorElement) {
-        errorElement.textContent = '';
-        input.style.backgroundColor = '';
-        input.style.borderColor = '';
-    }
-
+   
     // FUNCIÓN: Validar usuario en tiempo real
     function validateUsername() {
         const username = usernameInput.value.trim();

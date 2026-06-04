@@ -14,7 +14,7 @@
                 <ul class="menu-list">
                     <li class="menu-item" data-href="../loyaut/dashboard.php"><div class="icon"><i class="fas fa-tachometer-alt"></i></div><div class="label">Inicio</div></li>
                     <li class="menu-item" data-href="../representantes/representante.php"><div class="icon"><i class="fas fa-users"></i></div><div class="label">Representantes</div></li>
-                    <li class="menu-item" data-href="../alumnos/alumno.php"><div class="icon"><i class="fas fa-user-graduate"></i></div><div class="label">Alumnos</div></li>
+                    <li class="menu-item" data-href="../../controlador/ctl_alumno.php?L=lis"><div class="icon"><i class="fas fa-user-graduate"></i></div><div class="label">Alumnos</div></li>
                     <li class="menu-item" data-href="../entrenadores/entrenador.php"><div class="icon"><i class="fas fa-chalkboard-user"></i></div><div class="label">Entrenadores</div></li>
                     <li class="menu-item" data-href="../especialidad/especialidad.php"><div class="icon"><i class="fas fa-book"></i></div><div class="label">Especialidades</div></li>
                     <li class="menu-item" data-href="../tipotorneo/tipotorneo.php"><div class="icon"><i class="fas fa-list"></i></div><div class="label">Tipos de Torneo</div></li>

@@ -23,11 +23,17 @@
 
         <div class="form-card">
             <form id="formAlumno" method="POST" onsubmit="return validarFormularioCompleto(event)" action="./alumno.php">
+                <input type="hidden" name="registrar" value="registrar">
+                <input type="hidden" name="estatus" value="activo">
+                <input type="hidden" name="idUsuario" value="2">
+
                 <!-- DATOS PERSONALES -->
                 <h3 class="section-title">
                     <i class="fas fa-user me-2"></i>
                     Datos Personales
                 </h3>
+
+               
 
                 <div class="row">
                     <div class="col-md-3 mb-3">

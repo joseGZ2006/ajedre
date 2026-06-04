@@ -19,12 +19,16 @@
         </div>
 
         <div class="form-card">
-            <form id="formAlumno" method="POST" action="./alumno.php" onsubmit="return validarFormularioCompleto(event)">
+            <form id="formAlumno" method="POST" action="../../controlador/ctl_alumno.php" onsubmit="return validarFormularioCompleto(event)">
                 <!-- DATOS PERSONALES -->
                 <h3 class="section-title">
                     <i class="fas fa-user me-2"></i>
                     Datos Personales
                 </h3>
+                <input type="hidden" name="modificar" value="modificar">
+                <input type="hidden" name="idAlumno" id="idAlumno" value="1">
+                <input type="hidden" name="estatus" id="estatus" value="activo">
+                <input type="hidden" name="idUsuario" value="2">
 
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -69,7 +73,7 @@
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" maxlength="11"
+                        <input type="tel" class="form-control" id="telefono" maxlength="13"
                             value="04121234567">
                         <div class="invalid-feedback-real" id="telefonoFeedback"></div>
                     </div>

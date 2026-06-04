@@ -1,4 +1,4 @@
-(function(){
+    (function(){
     var dtCssHref = '../assets/js/datatables/datatables.min.css';
     var dtScriptSrc = '../assets/js/datatables/datatables.min.js';
     var selector = 'table.alumno-table';

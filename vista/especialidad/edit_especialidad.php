@@ -1,3 +1,16 @@
+<?php
+session_start();
+// Recibir y decodificar los parámetros
+$id = isset($_GET['id']) ? base64_decode($_GET['id']) : '';
+$nom = isset($_GET['nom']) ? base64_decode($_GET['nom']) : '';
+
+// Validar que los datos existen
+if(empty($id) || empty($nom)) {
+    $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Datos de especialidad no válidos.'];
+    header("Location: ./especialidad.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -28,7 +41,10 @@
 
         <div class="form-card">
 
-            <form onsubmit="return validarEditarEspecialidad(event)">
+            <form method="POST" action="../../controlador/ctl_especialidad.php" id="especialidadForm" onsubmit="return validarEspecialidad(event)">
+                
+                <input type="hidden" name="id" value="<?php echo base64_encode($id); ?>">
+                <input type="hidden" name="nombre_original" value="<?php echo base64_encode($nom); ?>">
 
                 <h3 class="section-title">Actualizar Especialidad</h3>
 
@@ -39,8 +55,10 @@
                     <input type="text"
                            class="form-control"
                            id="nombre"
-                           value="Aperturas de Ajedrez"
-                           placeholder="Ingrese la especialidad">
+                           name="nombre"
+                           value="<?php echo htmlspecialchars($nom); ?>"
+                           placeholder="Ingrese la especialidad"
+                           required>
 
                     <div class="invalid-feedback-real" id="nombreFeedback"></div>
                 </div>
@@ -48,11 +66,11 @@
                 <!-- BOTONES -->
                 <div class="form-actions">
 
-                    <button type="reset" class="btn btn-danger" id="resetBtn">
+                    <button type="button" class="btn btn-danger" id="resetBtn">
                         <i class="fas fa-eraser me-2"></i> Limpiar
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" name="actualizar" value="actualizar" class="btn btn-primary">
                         <i class="fas fa-save me-2"></i> Actualizar
                     </button>
 
@@ -66,12 +84,12 @@
 
 </div>
 
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
-
-<script src="../assets/js/validaciones_editespecialidad.js"></script>
 <script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/validaciones_especialidad.js"></script>
 
 </body>
 </html>

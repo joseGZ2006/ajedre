@@ -1,3 +1,16 @@
+<?php
+session_start();
+// Recibir y decodificar los parámetros
+$id = isset($_GET['id']) ? base64_decode($_GET['id']) : '';
+$nom = isset($_GET['nom']) ? base64_decode($_GET['nom']) : '';
+
+// Validar que los datos existen
+if(empty($id) || empty($nom)) {
+    $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Datos de especialidad no válidos.'];
+    header("Location: ./especialidad.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,7 +37,7 @@
             </div>
 
             <a href="./especialidad.php" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Volver al catálogo
+                <i class="fas fa-arrow-left me-2"></i> Volver al catálogo
             </a>
         </div>
 
@@ -34,10 +47,10 @@
                 <i class="fas fa-chess-knight"></i>
             </div>
 
-            <h2 id="detalleNombre">Aperturas de Ajedrez</h2>
+            <h2 id="detalleNombre"><?php echo htmlspecialchars($nom); ?></h2>
 
             <p class="text-muted">
-                ID: 1
+                ID: <?php echo htmlspecialchars($id); ?>
             </p>
         </div>
 
@@ -53,7 +66,7 @@
                 <div class="info-row">
                     <span class="info-label">Nombre:</span>
                     <span class="info-value" id="detalleEspecialidad">
-                        Aperturas de Ajedrez
+                        <?php echo htmlspecialchars($nom); ?>
                     </span>
                 </div>
 
@@ -64,6 +77,7 @@
     </div>
 </div>
 
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>

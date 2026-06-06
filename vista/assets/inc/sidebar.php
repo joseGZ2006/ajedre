@@ -15,8 +15,8 @@
                     <li class="menu-item" data-href="../loyaut/dashboard.php"><div class="icon"><i class="fas fa-tachometer-alt"></i></div><div class="label">Inicio</div></li>
                     <li class="menu-item" data-href="../representantes/representante.php"><div class="icon"><i class="fas fa-users"></i></div><div class="label">Representantes</div></li>
                     <li class="menu-item" data-href="../../controlador/ctl_alumno.php?L=lis"><div class="icon"><i class="fas fa-user-graduate"></i></div><div class="label">Alumnos</div></li>
-                    <li class="menu-item" data-href="../entrenadores/entrenador.php"><div class="icon"><i class="fas fa-chalkboard-user"></i></div><div class="label">Entrenadores</div></li>
-                    <li class="menu-item" data-href="../especialidad/especialidad.php"><div class="icon"><i class="fas fa-book"></i></div><div class="label">Especialidades</div></li>
+                    <li class="menu-item" data-href="../../controlador/ctl_entrenador.php?L=lis"><div class="icon"><i class="fas fa-chalkboard-user"></i></div><div class="label">Entrenadores</div></li>
+                    <li class="menu-item" data-href="../../controlador/ctl_especialidad.php?L=lis"><div class="icon"><i class="fas fa-book"></i></div><div class="label">Especialidades</div></li>
                     <li class="menu-item" data-href="../tipotorneo/tipotorneo.php"><div class="icon"><i class="fas fa-list"></i></div><div class="label">Tipos de Torneo</div></li>
                     <li class="menu-item" data-href="../asignacion_clase/asignacion_clase.php"><div class="icon"><i class="fas fa-chess-board"></i></div><div class="label">Asignación Clases</div></li>
                     <li class="menu-item" data-href="../horarios/horario.php"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div class="label">Horario Clases</div></li>

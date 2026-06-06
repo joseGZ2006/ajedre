@@ -83,22 +83,16 @@ if(isset($_POST['registrar']) && $_POST['registrar']=="registrar"){
 ### LISTAR #################################################################
 ############################################################################
 if(isset($_GET['L']) && $_GET['L']=="lis"){
-    try {
+   
         $datos = $alumno->ListarAlumnos();
         
         if($datos === false || empty($datos)){
             $_SESSION['flash'] = ['icon' => 'info', 'title' => 'Información', 'text' => 'No hay alumnos registrados.'];
-        } else {
-            $_SESSION['lista_alumnos'] = $datos;
         }
         
         header("Location: ../vista/alumnos/alumno.php");
         exit;
-    } catch (Exception $e) {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $e->getMessage()];
-        header("Location: ../vista/alumnos/alumno.php");
-        exit;
-    }
+    
 }
 
 ############################################################################

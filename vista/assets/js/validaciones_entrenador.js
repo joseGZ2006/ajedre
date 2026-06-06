@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showValid(input) {
         input.classList.remove('is-invalid');
-        input.classList.add('is-valid');
+        input.classList.add('valid');
         const feedback = document.getElementById(input.id + 'Feedback');
         if (feedback) {
-            feedback.textContent = '✓ Campo válido';
+            feedback.textContent = '';
             feedback.classList.remove('invalid-feedback-real');
             feedback.classList.add('valid-feedback-real');
         }
@@ -44,13 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const regex = {
         cedula: /^\d{7,8}$/,
         letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/,
-        telefono: /^[0-9]{4}-[0-9]{7}$/
+        telefono: /^\d{4}-\d{7}$/  // Formato: 0412-1234567 (4 dígitos + guión + 7 dígitos = total 12)
     };
 
     function formatTelefono(value) {
         const digits = value.replace(/\D/g, '');
+        if (digits.length === 0) return '';
         if (digits.length <= 4) return digits;
-        return digits.slice(0, 4) + '-' + digits.slice(4, 11);
+        return digits.slice(0, 4) + '-' + digits.slice(4, 11);  // 4 + 7 = 11 dígitos después del guión
     }
 
     // =========================
@@ -66,132 +67,207 @@ document.addEventListener('DOMContentLoaded', function () {
     // VALIDACIÓN EN TIEMPO REAL
     // =========================
 
-    cedula.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
+    if (cedula) {
+        cedula.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value === '') return clearValidation(this);
+            regex.cedula.test(this.value)
+                ? showValid(this)
+                : showError(this, 'Debe contener 7 u 8 números');
+        });
+    }
 
-        if (this.value === '') return clearValidation(this);
+    if (nombre) {
+        nombre.addEventListener('input', function () {
+            this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+            if (this.value === '') return clearValidation(this);
+            regex.letras.test(this.value)
+                ? showValid(this)
+                : showError(this, 'Solo letras y espacios');
+        });
+    }
 
-        regex.cedula.test(this.value)
-            ? showValid(this)
-            : showError(this, 'Debe contener 7 u 8 números');
-    });
+    if (apellido) {
+        apellido.addEventListener('input', function () {
+            this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+            if (this.value === '') return clearValidation(this);
+            regex.letras.test(this.value)
+                ? showValid(this)
+                : showError(this, 'Solo letras y espacios');
+        });
+    }
 
-    nombre.addEventListener('input', function () {
-        this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+    if (telefono) {
+        telefono.addEventListener('input', function () {
+            const cursorPos = this.selectionStart;
+            const oldLength = this.value.length;
+            const formatted = formatTelefono(this.value);
+            this.value = formatted;
+            
+            if (this.value === '') return clearValidation(this);
+            
+            const newLength = this.value.length;
+            const newCursorPos = cursorPos + (newLength - oldLength);
+            if (newCursorPos >= 0 && newCursorPos <= this.value.length) {
+                this.setSelectionRange(newCursorPos, newCursorPos);
+            }
 
-        if (this.value === '') return clearValidation(this);
-
-        regex.letras.test(this.value)
-            ? showValid(this)
-            : showError(this, 'Solo letras y espacios');
-    });
-
-    apellido.addEventListener('input', function () {
-        this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
-
-        if (this.value === '') return clearValidation(this);
-
-        regex.letras.test(this.value)
-            ? showValid(this)
-            : showError(this, 'Solo letras y espacios');
-    });
-
-    telefono.addEventListener('input', function () {
-        this.value = formatTelefono(this.value);
-
-        if (this.value === '') return clearValidation(this);
-
-        regex.telefono.test(this.value)
-            ? showValid(this)
-            : showError(this, 'Formato: 0412-1234567');
-    });
+            if (regex.telefono.test(this.value)) {
+                showValid(this);
+            } else if (this.value.length > 0) {
+                showError(this, 'Formato: 0412-1234567');
+            } else {
+                clearValidation(this);
+            }
+        });
+    }
 
     // =========================
-    // VALIDAR FORMULARIO (FIX DEFINITIVO)
+    // VERIFICAR CÉDULA DUPLICADA (AJAX)
     // =========================
+    window.verificarCedulaDuplicada = async function(cedulaValue, cedulaOriginal = null) {
+        try {
+            let url = `../controlador/ctl_entrenador.php?verificar_cedula=true&cedula=${cedulaValue}`;
+            if (cedulaOriginal) {
+                url += `&excluir=${cedulaOriginal}`;
+            }
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.existe;
+        } catch (error) {
+            console.error('Error al verificar cédula:', error);
+            return false;
+        }
+    };
 
-    window.validarFormularioCompleto = function (event) {
+    // =========================
+    // VALIDAR FORMULARIO COMPLETO
+    // =========================
+    window.validarFormularioCompleto = async function (event) {
+        if (event) event.preventDefault();
+        
         let valido = true;
+        let primerError = null;
 
-        // 🔴 CÉDULA (OBLIGATORIA)
-        if (cedula.value.trim() === '') {
-            showError(cedula, 'La cédula es obligatoria');
+        // Obtener referencias actualizadas
+        const cedulaInput = document.getElementById('cedula');
+        const nombreInput = document.getElementById('nombre');
+        const apellidoInput = document.getElementById('apellido');
+        const telefonoInput = document.getElementById('telefono');
+
+        // Validar CÉDULA
+        if (!cedulaInput || cedulaInput.value.trim() === '') {
+            if (cedulaInput) showError(cedulaInput, 'La cédula es obligatoria');
             valido = false;
-        } else if (!regex.cedula.test(cedula.value)) {
-            showError(cedula, 'Cédula inválida');
+            if (!primerError) primerError = cedulaInput;
+        } else if (!regex.cedula.test(cedulaInput.value)) {
+            showError(cedulaInput, 'Cédula inválida (7-8 dígitos)');
             valido = false;
+            if (!primerError) primerError = cedulaInput;
+        } else {
+            const cedulaOriginal = document.getElementById('cedula_original')?.value || null;
+            if (window.verificarCedulaDuplicada) {
+                const existe = await window.verificarCedulaDuplicada(cedulaInput.value, cedulaOriginal);
+                if (existe) {
+                    showError(cedulaInput, 'Esta cédula ya está registrada');
+                    valido = false;
+                    if (!primerError) primerError = cedulaInput;
+                } else {
+                    showValid(cedulaInput);
+                }
+            }
         }
 
-        // 🔴 NOMBRE
-        if (nombre.value.trim() === '') {
-            showError(nombre, 'El nombre es obligatorio');
+        // Validar NOMBRE
+        if (!nombreInput || nombreInput.value.trim() === '') {
+            if (nombreInput) showError(nombreInput, 'El nombre es obligatorio');
             valido = false;
-        } else if (!regex.letras.test(nombre.value)) {
-            showError(nombre, 'Nombre inválido');
+            if (!primerError) primerError = nombreInput;
+        } else if (!regex.letras.test(nombreInput.value)) {
+            showError(nombreInput, 'Solo letras y espacios');
             valido = false;
+            if (!primerError) primerError = nombreInput;
+        } else {
+            showValid(nombreInput);
         }
 
-        // 🔴 APELLIDO
-        if (apellido.value.trim() === '') {
-            showError(apellido, 'El apellido es obligatorio');
+        // Validar APELLIDO
+        if (!apellidoInput || apellidoInput.value.trim() === '') {
+            if (apellidoInput) showError(apellidoInput, 'El apellido es obligatorio');
             valido = false;
-        } else if (!regex.letras.test(apellido.value)) {
-            showError(apellido, 'Apellido inválido');
+            if (!primerError) primerError = apellidoInput;
+        } else if (!regex.letras.test(apellidoInput.value)) {
+            showError(apellidoInput, 'Solo letras y espacios');
             valido = false;
+            if (!primerError) primerError = apellidoInput;
+        } else {
+            showValid(apellidoInput);
         }
 
-        // 🔴 TELÉFONO
-        if (telefono.value.trim() === '') {
-            showError(telefono, 'El teléfono es obligatorio');
+        // Validar TELÉFONO
+        if (!telefonoInput || telefonoInput.value.trim() === '') {
+            if (telefonoInput) showError(telefonoInput, 'El teléfono es obligatorio');
             valido = false;
-        } else if (!regex.telefono.test(telefono.value)) {
-            showError(telefono, 'Formato: 0412-1234567');
+            if (!primerError) primerError = telefonoInput;
+        } else if (!regex.telefono.test(telefonoInput.value)) {
+            showError(telefonoInput, 'Formato: 0412-1234567');
             valido = false;
+            if (!primerError) primerError = telefonoInput;
+        } else {
+            showValid(telefonoInput);
         }
 
-        // =========================
-        // BLOQUEO FINAL
-        // =========================
+        // SI HAY ERRORES
         if (!valido) {
-            event.preventDefault();
+            if (primerError) {
+                primerError.focus();
+                primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
             Swal.fire({
                 icon: 'error',
-                title: 'Campos incompletos',
-                text: 'Debe completar todos los campos obligatorios'
+                title: 'Campos inválidos',
+                text: 'Por favor, corrija los errores marcados en el formulario',
+                confirmButtonColor: '#3085d6'
             });
             return false;
         }
 
-        event.preventDefault();
+        // TODO VÁLIDO → ENVIAR FORMULARIO
         const form = event.target;
-        Swal.fire({
-            icon: 'success',
-            title: '¡Registro exitoso!',
-            text: 'El entrenador ha sido registrado correctamente.',
-            confirmButtonText: 'Aceptar'
-        }).then(() => {
-            if (form) form.submit();
-        });
+        
+      
+            
+     
+        if (form) {
+               form.submit(); 
+        } else {
+            console.error('Formulario no encontrado para enviar');
+        }       
+
         return false;
-    };
+    };    
+ 
 
     // =========================
-    // RESET
+    // RESET DEL FORMULARIO
     // =========================
-
     const resetBtn = document.getElementById('resetBtn');
-
     if (resetBtn) {
-        resetBtn.addEventListener('click', function () {
-
-            document.querySelectorAll('.form-control').forEach(input => {
+        resetBtn.addEventListener('click', function (e) {
+            const inputs = document.querySelectorAll('.form-control, .form-select');
+            inputs.forEach(input => {
                 input.classList.remove('is-valid', 'is-invalid');
+                if (input.id === 'telefono') {
+                    input.value = '';
+                }
             });
 
-            document.querySelectorAll('.invalid-feedback-real').forEach(div => {
+            const feedbacks = document.querySelectorAll('.invalid-feedback-real, .valid-feedback-real');
+            feedbacks.forEach(div => {
                 div.textContent = '';
+                div.classList.remove('invalid-feedback-real', 'valid-feedback-real');
             });
         });
     }
-
 });

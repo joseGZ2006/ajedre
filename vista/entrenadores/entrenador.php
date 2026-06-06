@@ -1,3 +1,14 @@
+<?php
+session_start();
+include("../../modelo/conexion.php");
+include("../../modelo/clase_entrenador.php");
+
+$ent = new Entrenador();
+$entrenadores = $ent->ListarEntrenadores();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,95 +17,77 @@
 
 <body>
 <div class="page-container">
-
-    <!-- SIDEBAR -->
     <?php include '../assets/inc/sidebar.php'; ?>
-
-    <!-- HEADER -->
     <?php include '../assets/inc/header.php'; ?>
 
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <div class="catalog-header">
-                <h1 class="page-title"><i class="fas fa-chalkboard-user me-2"></i> ENTRENADORES</h1>
-                <button class="btn btn-custom"><a href="./insert_entrenador.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Entrenador</a></button>
-            </div>
+    <div class="main-content">
+        <div class="catalog-header">
+            <h1 class="page-title"><i class="fas fa-chalkboard-user me-2"></i> ENTRENADORES</h1>
+            <a href="./insert_entrenador.php" class="btn btn-custom"><i class="fas fa-plus-circle me-2"></i>Nuevo Entrenador</a>
+        </div>
 
-            <!-- TABLA DE ENTRENADORES -->
-            <div class="table-responsive">
-                <table class="table alumno-table" id="entrenadorTable">
-                    <thead>
+        
+        <div class="table-responsive">
+            <table class="table alumno-table" id="entrenadorTable">
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaEntrenadores">
+                    <?php if($entrenadores && count($entrenadores) > 0): ?>
+                        <?php foreach($entrenadores as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['cedula']); ?></td>
+                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                <td><?php echo htmlspecialchars($row['apellido']); ?></td>
+                                <td>
+                                    <a class="btn btn-sm btn-secondary" href="../../controlador/ctl_entrenador.php?C=con&I=<?php echo base64_encode($row['cedula']); ?>">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-primary" href="../../controlador/ctl_entrenador.php?M=mos&I=<?php echo base64_encode($row['cedula']); ?>">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete" data-cedula="<?php echo $row['cedula']; ?>" data-nombre="<?php echo htmlspecialchars($row['nombre'] . ' ' . $row['apellido']); ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <tr>
-                            <th>Cédula</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Acciones</th>
+                            <td colspan="4" class="text-center">No hay entrenadores registrados</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>12345678</td>
-                            <td>Marcos</td>
-                            <td>Pérez</td>
-                            <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="12345678" data-nombre="Marcos Pérez">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>87654321</td>
-                            <td>Ana</td>
-                            <td>Rodríguez</td>
-                            <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="87654321" data-nombre="Ana Rodríguez">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>11223344</td>
-                            <td>Carlos</td>
-                            <td>Martínez</td>
-                            <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="11223344" data-nombre="Carlos Martínez">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>99887766</td>
-                            <td>Laura</td>
-                            <td>Gómez</td>
-                            <td>
-                                <a class="btn btn-sm btn-secondary" href="./detalle_entrenador.php"><i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm btn-primary" href="./edit_entrenador.php"><i class="fas fa-edit"></i></a>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="99887766" data-nombre="Laura Gómez">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+<?php include '../assets/inc/flash.php'; ?>
+<script src="../assets/js/jquery-3.6.0.min.js"></script>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/sweetalert2.all.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+   
 
-    <script src="../assets/js/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebar.js"></script>
-    <script src="../assets/js/sweetalert2.all.min.js"></script>
-    <script>
-        function confirmarEliminacion(nombreEntrenador, cedula) {
+    // Eliminación
+    const botonesEliminar = document.querySelectorAll('.btn-delete');
+    
+    botonesEliminar.forEach((boton) => {
+        boton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const nombre = this.getAttribute('data-nombre');
+            const cedula = this.getAttribute('data-cedula');
+            
             Swal.fire({
                 title: '¿Eliminar entrenador?',
-                text: `¿Estás seguro de que deseas eliminar a ${nombreEntrenador} con cédula ${cedula}?`,
+                text: `¿Estás seguro de que deseas eliminar al entrenador "${nombre}"?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -104,38 +97,12 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: '¡Eliminado!',
-                        text: `El entrenador ${nombreEntrenador} ha sido eliminado.`,
-                        icon: 'success',
-                        confirmButtonColor: '#3085d6'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Cancelado',
-                        text: 'La eliminación fue cancelada',
-                        icon: 'info',
-                        confirmButtonColor: '#3085d6',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+                    window.location.href = `../../controlador/ctl_entrenador.php?E=eli&I=${btoa(cedula)}`;
                 }
             });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const botonesEliminar = document.querySelectorAll('.btn-delete');
-            
-            botonesEliminar.forEach((boton) => {
-                boton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const fila = this.closest('tr');
-                    const nombre = fila.cells[1]?.textContent + ' ' + fila.cells[2]?.textContent || 'desconocido';
-                    const cedula = fila.cells[0]?.textContent || 'desconocida';
-                    confirmarEliminacion(nombre, cedula);
-                });
-            });
         });
-    </script>
+    });
+});
+</script>
 </body>
 </html>

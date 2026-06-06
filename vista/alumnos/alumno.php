@@ -16,19 +16,7 @@
     <?php
     session_start();
     
-    // Verificar si hay mensaje flash
-    if (isset($_SESSION['flash'])) {
-        $flash = $_SESSION['flash'];
-        echo "<script>
-            Swal.fire({
-                icon: '{$flash['icon']}',
-                title: '{$flash['title']}',
-                text: '{$flash['text']}',
-                confirmButtonColor: '#3085d6'
-            });
-        </script>";
-        unset($_SESSION['flash']);
-    }
+ 
     
     include '../../modelo/conexion.php';
     
@@ -141,7 +129,7 @@
         </div>
     </div>
 </div>
-
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>

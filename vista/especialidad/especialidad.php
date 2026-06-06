@@ -1,3 +1,13 @@
+<?php
+session_start();
+include("../../modelo/conexion.php");
+include("../../modelo/clase_especialidad.php");
+
+$espe = new Especialidad();
+$especialidad = $espe->ListarEspecialidad();
+
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,113 +26,85 @@
     <!-- CONTENIDO -->
     <div class="main-content">
 
-        <div class="catalog-header">
-            <h1 class="page-title">
-                <i class="fas fa-chess-knight me-2"></i> ESPECIALIDADES
-            </h1>
-
-            <button class="btn btn-custom">
-                <a href="./insert_especialidad.php">
-                    <i class="fas fa-plus-circle me-2"></i> Nueva Especialidad
-                </a>
-            </button>
+       <div class="catalog-header">
+            <h1 class="page-title"><i class="fas fa-chalkboard-user me-2"></i> ESPECIALIDADES</h1>
+            <a href="./insert_especialidad.php" class="btn btn-custom"><i class="fas fa-plus-circle me-2"></i>Nueva Especialidad</a>
         </div>
 
-        <!-- TABLA -->
-        <div class="table-responsive">
-            <table class="table alumno-table" id="especialidadTable">
-
-                <thead>
-                    <tr>
-                        <th>Especialidad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>Aperturas de Ajedrez</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Aperturas de Ajedrez">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Estrategia Posicional</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Estrategia Posicional">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Táctica y Cálculo</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_especialidad.php"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_especialidad.php"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Táctica y Cálculo">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-        </div>
+       
+            <div class="table-responsive">
+                <table class="table alumno-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if($especialidad && count($especialidad) > 0): ?>
+                        <?php foreach($especialidad as $row): ?>
+                            <tr>
+                                <?php $idEspecialidad = $row['idEspecialidad'];?>
+                                <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                                <td>
+                                   
+                                    <a class="btn btn-sm btn-primary" href="../../controlador/ctl_especialidad.php?M=mos&I=<?php echo $idEspecialidad; ?>">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger btn-delete" data-idEspecialidad="<?php echo $idEspecialidad; ?>" data-nombre="<?php echo htmlspecialchars($row['nombre']); ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="text-center">No hay especialidades registradas</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
 
     </div>
-</div>
 
-<!-- JS -->
+</div>
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener('DOMContentLoaded', function() {
     const botonesEliminar = document.querySelectorAll('.btn-delete');
-
-    botonesEliminar.forEach((btn) => {
-        btn.addEventListener('click', function () {
-
+    
+    botonesEliminar.forEach((boton) => {
+        boton.addEventListener('click', function(e) {
+            e.preventDefault();
             const nombre = this.getAttribute('data-nombre');
-
+            const idEspecialidad = this.getAttribute('data-idEspecialidad');
+            
             Swal.fire({
                 title: '¿Eliminar especialidad?',
-                text: `¿Deseas eliminar: ${nombre}?`,
+                text: `¿Estás seguro de que deseas eliminar la especialidad "${nombre}"?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                confirmButtonText: 'Eliminar',
-                cancelButtonText: 'Cancelar'
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
             }).then((result) => {
-
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'Especialidad eliminada correctamente'
-                    });
+                    window.location.href = `../../controlador/ctl_especialidad.php?E=eli&I=${btoa(idEspecialidad)}`;
                 }
-
             });
-
         });
     });
-
 });
 </script>
 
 </body>
+
 </html>

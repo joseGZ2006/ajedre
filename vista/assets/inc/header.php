@@ -15,7 +15,7 @@
                     </div>
                     <div class="profile-menu" id="profileMenu">
                         <a href="#">Configuración</a>
-                        <a href="#">Cerrar sesión</a>
+                        <a href="../loyaut/login.php">Cerrar sesión</a>
                     </div>
                 </div>
             </div>

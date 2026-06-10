@@ -1,10 +1,7 @@
 FROM php:8.2-apache
 
-# Instala extensiones de MySQL/PDO
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-install mysqli pdo_mysql
 
-# Copia tu código (ajusta la ruta según tu estructura)
-COPY ajedre-main/ /var/www/html/
+COPY . /var/www/html/
 
-# Habilita mod_rewrite
 RUN a2enmod rewrite

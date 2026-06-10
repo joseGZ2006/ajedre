@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showValid(input) {
         input.classList.remove('is-invalid');
-        input.classList.add('valid');
+        input.classList.add('is-valid');
         const feedback = document.getElementById(input.id + 'Feedback');
         if (feedback) {
             feedback.textContent = '';
@@ -44,20 +44,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const regex = {
         cedula: /^\d{7,8}$/,
         letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/,
-        telefono: /^\d{4}-\d{7}$/  // Formato: 0412-1234567 (4 dígitos + guión + 7 dígitos = total 12)
+        telefono: /^\d{4}-\d{7}$/  // Formato: 0412-1234567
     };
 
     function formatTelefono(value) {
         const digits = value.replace(/\D/g, '');
         if (digits.length === 0) return '';
         if (digits.length <= 4) return digits;
-        return digits.slice(0, 4) + '-' + digits.slice(4, 11);  // 4 + 7 = 11 dígitos después del guión
+        return digits.slice(0, 4) + '-' + digits.slice(4, 11);
     }
 
     // =========================
     // INPUTS
     // =========================
 
+    const id_usuario = document.getElementById('id_usuario');
     const cedula = document.getElementById('cedula');
     const nombre = document.getElementById('nombre');
     const apellido = document.getElementById('apellido');
@@ -66,6 +67,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // =========================
     // VALIDACIÓN EN TIEMPO REAL
     // =========================
+
+    if (id_usuario) {
+        id_usuario.addEventListener('change', function () {
+            if (this.value === '') {
+                clearValidation(this);
+            } else {
+                showValid(this);
+            }
+        });
+    }
 
     if (cedula) {
         cedula.addEventListener('input', function () {
@@ -150,10 +161,20 @@ document.addEventListener('DOMContentLoaded', function () {
         let primerError = null;
 
         // Obtener referencias actualizadas
+        const id_usuarioInput = document.getElementById('id_usuario');
         const cedulaInput = document.getElementById('cedula');
         const nombreInput = document.getElementById('nombre');
         const apellidoInput = document.getElementById('apellido');
         const telefonoInput = document.getElementById('telefono');
+
+        // Validar USUARIO
+        if (!id_usuarioInput || id_usuarioInput.value === '') {
+            if (id_usuarioInput) showError(id_usuarioInput, 'Debe seleccionar un usuario');
+            valido = false;
+            if (!primerError) primerError = id_usuarioInput;
+        } else {
+            showValid(id_usuarioInput);
+        }
 
         // Validar CÉDULA
         if (!cedulaInput || cedulaInput.value.trim() === '') {
@@ -236,18 +257,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // TODO VÁLIDO → ENVIAR FORMULARIO
         const form = event.target;
         
-      
-            
-     
         if (form) {
-               form.submit(); 
+            form.submit(); 
         } else {
             console.error('Formulario no encontrado para enviar');
         }       
 
         return false;
     };    
- 
 
     // =========================
     // RESET DEL FORMULARIO
@@ -268,6 +285,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 div.textContent = '';
                 div.classList.remove('invalid-feedback-real', 'valid-feedback-real');
             });
+            
+            // Resetear select de usuario
+            const usuarioSelect = document.getElementById('id_usuario');
+            if (usuarioSelect) {
+                usuarioSelect.value = '';
+                clearValidation(usuarioSelect);
+            }
         });
     }
 });

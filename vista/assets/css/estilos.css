@@ -207,6 +207,19 @@
     background: linear-gradient(135deg, #2c3e50, #34495e);
     color: #ecf0f1;
 }
+
+.btn-eliminar {
+    background: #dc3545;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+}
+
+.btn-eliminar:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
 .user-profile{
     background: #6aa5ee;
 }
@@ -338,6 +351,8 @@
             padding: 10px 25px;
             border-radius: 25px;
         }
+
+        
         
         .btn-add {
             position: absolute;

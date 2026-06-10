@@ -27,7 +27,7 @@
                 <table class="table alumno-table" id="asignacionClaseTable">
                     <thead>
                         <tr>
-                            <th>ID Asignación</th>
+                            <th>ID AsignaciónClase</th>
                             <th>Alumno</th>
                             <th>Entrenador</th>
                             <th>Horario</th>

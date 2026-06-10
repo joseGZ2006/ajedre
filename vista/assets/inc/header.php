@@ -14,8 +14,8 @@
                         <span>Lagea111</span>
                     </div>
                     <div class="profile-menu" id="profileMenu">
-                        <a href="#">Configuración</a>
-                        <a href="../loyaut/login.php">Cerrar sesión</a>
+                        <a class="rounded-pill" href="#">Mi Perfil</a>
+                        <a class="rounded-pill text-danger" href="../loyaut/login.php">Cerrar sesión</a>
                     </div>
                 </div>
             </div>

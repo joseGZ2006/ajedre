@@ -156,7 +156,7 @@
                     confirmButtonColor: '#3085d6'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = './asignacion_clase.html';
+                        window.location.href = './asignacion_clase.php';
                     }
                 });
             }

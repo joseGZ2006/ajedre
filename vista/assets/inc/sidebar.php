@@ -23,7 +23,7 @@
                     <li class="menu-item" data-href="../torneos/torneo.php"><div class="icon"><i class="fas fa-trophy"></i></div><div class="label">Torneos</div></li>
                     <li class="menu-item" data-href="../asistencias/asistencia.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Asistencia</div></li>
                     <li class="menu-item" data-href="../inscripcion_torneo/inscripcion_torneo.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Inscripciones Torneo</div></li>
-                    <li class="menu-item" data-href="../usuarios/usuario.php"><div class="icon"><i class="fas fa-user"></i></div><div class="label">Usuarios</div></li>
+                    <li class="menu-item" data-href="../../controlador/ctl_usuario.php?L=lis"><div class="icon"><i class="fas fa-user"></i></div><div class="label">Usuarios</div></li>
                     <li class="menu-item" data-href="../inscripcion_alumno/inscripcion_alumno.php"><div class="icon"><i class="fas fa-clipboard-list"></i></div><div class="label">Inscripciones Alumno</div></li>
                 </ul>
                 <div class="section">BÚSQUEDA</div>

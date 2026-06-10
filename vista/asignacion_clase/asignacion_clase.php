@@ -1,3 +1,7 @@
+<?php
+ // Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+?>
 <!DOCTYPE html>
 <html lang="es">
 

@@ -3,6 +3,9 @@ session_start();
 include("../../modelo/conexion.php");
 include("../../modelo/clase_usuario.php");
 
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+
 // Verificar si se recibieron los parámetros
 if(!isset($_GET['id']) || !isset($_GET['nom']) || !isset($_GET['rol']) || !isset($_GET['est'])) {
     $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Parámetros incompletos para editar el usuario.'];

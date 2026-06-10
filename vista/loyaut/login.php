@@ -1,13 +1,13 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <?php include '../assets/inc/head.php'; ?>
-
     <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body>
-    
-
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
@@ -19,11 +19,11 @@
             </div>
             
             <div class="login-body">
-                <form id="loginForm" method="post" action="./dashboard.php">
+                <form id="loginForm" role="form" name="formulario" method="POST" action="../../controlador/ctl_usuario.php">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Usuario o correo electrónico" autocomplete="off">
+                            <input type="text" class="form-control" id="username" name="nombreUsuario" placeholder="Usuario" autocomplete="off">
                         </div>
                         <small class="form-text" id="usernameError"></small>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                            <input type="password" class="form-control" id="password" name="contrasena" placeholder="Contraseña">
                         </div>
                         <small class="form-text" id="passwordError"></small>
                     </div>
@@ -41,7 +41,7 @@
                         <label for="showPassword">Mostrar contraseña</label>
                     </div>
                     
-                    <button type="submit" class="btn-login">
+                    <button type="submit" class="btn-login" name="aceptar" value="aceptar">
                         <i class="fas fa-arrow-right"></i> Iniciar Sesión
                     </button>
                 </form>
@@ -52,11 +52,12 @@
             </div>
         </div>
     </div>
-
+    <?php include '../assets/inc/flash.php'; ?>
     <script src="../assets/jquery.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sweetalert2.all.min.js"></script>
-    <!-- JS separado para el login -->
-    <script src="../assets/js/validación_login.js"></script>
+    <script src="../assets/js/validacion_login.js"></script>
+    
+ 
 </body>
 </html>

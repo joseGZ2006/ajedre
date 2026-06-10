@@ -38,6 +38,8 @@ class Usuario {
         return in_array($estatus, $estatusPermitidos);
     }
 
+
+
     /**
      * OBTENER LA INFORMACIÓN COMPLETA DEL USUARIO (incluyendo a quién pertenece)
      */
@@ -451,6 +453,47 @@ class Usuario {
         $sql = $conex->prepare("SELECT idUsuario, nombreUsuario, rol, estatus FROM USUARIO WHERE nombreUsuario = ?");
         $sql->execute([$nombreUsuario]);
         return $sql->fetch(PDO::FETCH_ASSOC);
+    }
+
+    ############################################################################
+    ### INICIAR SESION #########################################################
+    ############################################################################
+    public function IniciarSesion($nombreUsuario, $contrasena){
+        include("conexion.php");
+        
+        try {
+            // Buscar usuario por nombre de usuario
+            $sql = $conex->prepare("SELECT idUsuario, nombreUsuario, contrasena, rol, estatus 
+                                   FROM USUARIO 
+                                   WHERE nombreUsuario = ?");
+            $sql->execute([$nombreUsuario]);
+            $num_reg = $sql->rowCount();
+            $data = $sql->fetch(PDO::FETCH_ASSOC);
+
+            if ($num_reg > 0) {
+                // Verificar si la contraseña coincide
+                if (password_verify($contrasena, $data['contrasena'])) {
+                    // Verificar si el usuario está activo
+                    if ($data['estatus'] === 'activo') {
+                        return [
+                            'idUsuario' => $data['idUsuario'],
+                            'nombreUsuario' => $data['nombreUsuario'],
+                            'rol' => $data['rol'],
+                            'estatus' => $data['estatus']
+                        ];
+                    } else {
+                        return -1; // Usuario inactivo
+                    }
+                } else {
+                    return 0; // Contraseña incorrecta
+                }
+            } else {
+                return 0; // Usuario no encontrado
+            }
+        } catch (PDOException $e) {
+            error_log("Error en inicio de sesión: " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>

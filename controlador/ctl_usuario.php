@@ -291,4 +291,56 @@ if(isset($_GET['E']) && $_GET['E'] == "eli"){
     exit;
 }
 
+############################################################################
+### INICIAR SESION #########################################################
+############################################################################
+if(isset($_POST['aceptar']) && $_POST['aceptar'] == "aceptar"){
+    $nombreUsuario = trim($_POST['nombreUsuario']);
+    $contrasena = $_POST['contrasena'];
+    
+    // Validaciones básicas
+    if(empty($nombreUsuario)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Ingrese su nombre de usuario.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+    
+    if(empty($contrasena)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Ingrese su contraseña.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+    
+    $resultado = $usuario->IniciarSesion($nombreUsuario, $contrasena);
+    
+    if(is_array($resultado)){
+        // Inicio de sesión exitoso
+        $_SESSION['id_ses'] = $resultado['idUsuario'];
+        $_SESSION['usu_ses'] = $resultado['nombreUsuario'];
+        $_SESSION['rol_ses'] = $resultado['rol'];
+        $_SESSION['est_ses'] = $resultado['estatus'];
+        
+      
+        
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'BIENVENIDO', 'text' => "Bienvenido {$resultado['nombreUsuario']}"];
+        header("Location: ../vista/loyaut/dashboard.php");
+        exit;
+        
+    } elseif($resultado === -1) {
+        // Usuario inactivo
+        $_SESSION['flash'] = ['icon' => 'warning', 'title' => 'Usuario Inactivo', 'text' => 'Usuario INACTIVO. Consulte al ADMINISTRADOR del sistema.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+        
+    } else {
+        // Credenciales incorrectas
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Autenticación', 'text' => 'Usuario o contraseña incorrectos.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+}
+
+
+
+
 ?>

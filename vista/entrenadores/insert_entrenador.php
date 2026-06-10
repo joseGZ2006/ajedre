@@ -3,6 +3,11 @@ session_start();
 include("../../modelo/conexion.php");
 include("../../modelo/clase_usuario.php");
 
+
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+
+
 $usuarioObj = new Usuario();
 $usuariosDisponibles = $usuarioObj->obtenerUsuariosDisponiblesParaEntrenador();
 ?>

@@ -1,3 +1,7 @@
+<?php
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,7 +23,7 @@
             <div class="dashboard-header">
                 <div>
                     <h1 class="page-title"><i class="fas fa-chart-line me-2"></i> Panel de Control</h1>
-                    <p class="text-muted mt-1">Bienvenido de nuevo, aquí tienes un resumen general de la academia.</p>
+                    <p class="text-muted mt-1">Bienvenido de nuevo, <?php echo htmlspecialchars($_SESSION['usu_ses'] ?? 'Usuario'); ?>, aquí tienes un resumen general de la academia.</p>
                 </div>
                 <div class="date-badge">
                     <i class="fas fa-calendar-alt"></i>
@@ -82,7 +86,7 @@
             </div>
         </div>
     </div>
-
+    <?php include '../assets/inc/flash.php'; ?>
     <!-- Scripts -->
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>

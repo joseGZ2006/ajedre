@@ -4,6 +4,11 @@ include("../../modelo/conexion.php");
 include("../../modelo/clase_entrenador.php");
 include("../../modelo/clase_usuario.php");
 
+
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+
+
 $ent = new Entrenador();
 $usuarioObj = new Usuario();
 $cedula_decodificada = base64_decode($_GET['ced']);

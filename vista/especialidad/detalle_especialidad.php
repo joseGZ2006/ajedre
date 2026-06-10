@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+
+
 // Recibir y decodificar los parámetros
 $id = isset($_GET['id']) ? base64_decode($_GET['id']) : '';
 $nom = isset($_GET['nom']) ? base64_decode($_GET['nom']) : '';

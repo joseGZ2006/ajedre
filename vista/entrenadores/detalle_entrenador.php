@@ -3,6 +3,11 @@ session_start();
 include("../../modelo/conexion.php");
 include("../../modelo/clase_entrenador.php");
 
+
+// Verificar sesión antes de mostrar el dashboard
+include_once("../../controlador/verificar_sesion.php");
+
+
 $ced = isset($_GET['ced']) ? base64_decode($_GET['ced']) : null;
 
 $ent = new Entrenador();

@@ -1,4 +1,5 @@
 <?php
+session_start();
 // cambiar_credenciales.php
 include_once("../../controlador/verificar_sesion.php");
 

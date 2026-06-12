@@ -42,10 +42,9 @@ include_once("../../controlador/verificar_sesion.php");
             <table class="table alumno-table" id="usuarioTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nombre de Usuario</th>
                         <th>Rol</th>
-                        <th>Estatus</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -53,7 +52,7 @@ include_once("../../controlador/verificar_sesion.php");
                     <?php if($Usuarios && count($Usuarios) > 0): ?>
                         <?php foreach($Usuarios as $user): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($user['idUsuario']); ?></td>
+                                <?php  htmlspecialchars($user['idUsuario']); ?>
                                 <td><?php echo htmlspecialchars($user['nombreUsuario']); ?></td>
                                 <td>
                                 
@@ -93,36 +92,7 @@ include_once("../../controlador/verificar_sesion.php");
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
-<script>
-    function confirmarEliminacion(nombreUsuario, idEncoded) {
-        Swal.fire({
-            title: '¿Eliminar usuario?',
-            text: `¿Estás seguro de que deseas eliminar al usuario "${nombreUsuario}"?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `../../controlador/ctl_usuario.php?E=eli&I=${idEncoded}`;
-            }
-        });
-    }
+<?php include '../assets/inc/eliminar_usuario.php'; ?>
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const botonesEliminar = document.querySelectorAll('.btn-delete');
-        botonesEliminar.forEach((boton) => {
-            boton.addEventListener('click', function(e) {
-                e.preventDefault();
-                const nombre = this.getAttribute('data-nombre');
-                const id = this.getAttribute('data-id');
-                confirmarEliminacion(nombre, id);
-            });
-        });
-    });
-</script>
 </body>
 </html>

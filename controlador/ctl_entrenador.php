@@ -2,7 +2,6 @@
 session_start();
 include("../modelo/conexion.php");
 include("../modelo/clase_entrenador.php");
-include("../modelo/clase_usuario.php");
 
 // Verificar cédula duplicada vía AJAX
 if(isset($_GET['verificar_cedula']) && $_GET['verificar_cedula'] == 'true') {
@@ -23,26 +22,13 @@ $ent = new Entrenador();
 ### REGISTRAR ##############################################################
 ############################################################################
 if(isset($_POST['registrar']) && $_POST['registrar'] == "registrar"){
-    // Validaciones del lado del servidor
     $errores = [];
-    
-    // Validar usuario seleccionado
-    if(empty($_POST['id_usuario'])) {
-        $errores[] = "Debe seleccionar un usuario para el entrenador";
-    } else {
-        $usuarioObj = new Usuario();
-        $usuarioAsociado = $usuarioObj->verificarUsuarioAsociadoAEntrenador($_POST['id_usuario']);
-        if($usuarioAsociado) {
-            $errores[] = "El usuario seleccionado ya está asociado a otro entrenador";
-        }
-    }
     
     if(empty($_POST['cedula'])) {
         $errores[] = "La cédula es requerida";
     } elseif(!preg_match('/^\d{7,8}$/', $_POST['cedula'])) {
         $errores[] = "La cédula debe tener entre 7 y 8 dígitos numéricos";
     } else {
-        // Verificar si la cédula ya existe
         if($ent->verificarCedulaExistente($_POST['cedula'])) {
             $errores[] = "Ya existe un entrenador registrado con esta cédula";
         }
@@ -60,9 +46,7 @@ if(isset($_POST['registrar']) && $_POST['registrar'] == "registrar"){
         $errores[] = "El apellido solo puede contener letras y espacios";
     }
     
-    if(empty($_POST['telefono'])) {
-        $errores[] = "El teléfono es requerido";
-    } elseif(!preg_match('/^\d{4}-\d{7}$/', $_POST['telefono'])) {
+    if(!empty($_POST['telefono']) && !preg_match('/^\d{4}-\d{7}$/', $_POST['telefono'])) {
         $errores[] = "El teléfono debe tener el formato: 0412-1234567";
     }
     
@@ -72,23 +56,21 @@ if(isset($_POST['registrar']) && $_POST['registrar'] == "registrar"){
         exit;
     }
 
-    // Setear las variables
     $cedula = trim($_POST['cedula']);
     $nombre = trim($_POST['nombre']);
     $apellido = trim($_POST['apellido']);
-    $telefono = trim($_POST['telefono']);
-    $id_usuario = $_POST['id_usuario'];
-    $id_especialidad = isset($_POST['id_especialidad']) && !empty($_POST['id_especialidad']) ? $_POST['id_especialidad'] : null;
+    $telefono = !empty($_POST['telefono']) ? trim($_POST['telefono']) : null;
+    $id_usuario = null;
+    $idEspecialidad = trim($_POST['idEspecialidad']);
 
-    // Registrar entrenador con el usuario seleccionado
-    $resultado = $ent->RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $id_especialidad);
+    $datos = $ent->RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $idEspecialidad);
     
-    if($resultado == true){ 
-        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Entrenador registrado con éxito.'];
+    if($datos){ 
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Entrenador Registrado con éxito.'];
         header("Location: ../vista/entrenadores/entrenador.php");
         exit;
     } else {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo registrar el entrenador. Verifique que la cédula no exista y que el usuario no esté asociado a otro entrenador.'];
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo registrar los datos. La cédula ya existe o hubo un error.'];
         header("Location: ../vista/entrenadores/insert_entrenador.php");
         exit;
     }
@@ -109,58 +91,37 @@ if(isset($_GET['L']) && $_GET['L'] == "lis"){
 }
 
 #############################################################################
-### CONSULTAR ###############################################################
+### CONSULTAR (para detalle) ################################################
 #############################################################################
 if(isset($_GET['C']) && $_GET['C'] == "con"){
     $ced = base64_decode($_GET['I']);
-    $ent->setCedula($ced);
-
-    $datos = $ent->ConsultarEntrenador($ent->getCedula());
+    $datos = $ent->ConsultarEntrenador($ced);
     
     if($datos === false){
         $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se encontró el entrenador solicitado.'];
         header("Location: ../vista/entrenadores/entrenador.php");
         exit;
     } else {
-        $id = base64_encode($datos[0]);
         $ced = base64_encode($datos[1]);
-        $nom = base64_encode($datos[2]);
-        $ape = base64_encode($datos[3]);
-        $tel = base64_encode($datos[4]);
-        $idUsu = base64_encode($datos[5]);
-        $idEsp = base64_encode($datos[6]);
-        
-        header("Location: ../vista/entrenadores/detalle_entrenador.php?id=$id&ced=$ced&nom=$nom&ape=$ape&tel=$tel&idu=$idUsu&idesp=$idEsp");
+        header("Location: ../vista/entrenadores/detalle_entrenador.php?ced=$ced");
         exit;
     }
 }
 
 ############################################################################
-### MOSTRAR ################################################################
+### MOSTRAR (para editar) ##################################################
 ############################################################################
 if(isset($_GET['M']) && $_GET['M'] == "mos"){
     $ced = base64_decode($_GET['I']);
-    $ent->setCedula($ced);
-
-    $datos = $ent->MostrarEntrenador($ent->getCedula());
+    $datos = $ent->MostrarEntrenador($ced);
     
     if($datos === false){
         $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se encontró el entrenador solicitado.'];
         header("Location: ../vista/entrenadores/entrenador.php");
         exit;
     } else {
-        $id = base64_encode($datos[0]);
         $ced = base64_encode($datos[1]);
-        $nom = base64_encode($datos[2]);
-        $ape = base64_encode($datos[3]);
-        $tel = base64_encode($datos[4]);
-        $idUsu = base64_encode($datos[5]);
-        $idEsp = base64_encode($datos[6]);
-        $nomUsu = base64_encode($datos[7]);
-        $rol = base64_encode($datos[8]);
-        $espNom = base64_encode($datos[9]);
-
-        header("Location: ../vista/entrenadores/edit_entrenador.php?ced=$ced&id=$id&nom=$nom&ape=$ape&tel=$tel&idu=$idUsu&idesp=$idEsp&nomusu=$nomUsu&rol=$rol&espnom=$espNom");
+        header("Location: ../vista/entrenadores/edit_entrenador.php?ced=$ced");
         exit;
     }
 }
@@ -171,21 +132,19 @@ if(isset($_GET['M']) && $_GET['M'] == "mos"){
 if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
     $errores = [];
     
-    if(empty($_POST['id_usuario'])) {
-        $errores[] = "Debe seleccionar un usuario para el entrenador";
-    }
-    
     if(empty($_POST['nombre'])) {
         $errores[] = "El nombre es requerido";
+    } elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/', $_POST['nombre'])) {
+        $errores[] = "El nombre solo puede contener letras y espacios";
     }
     
     if(empty($_POST['apellido'])) {
         $errores[] = "El apellido es requerido";
+    } elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/', $_POST['apellido'])) {
+        $errores[] = "El apellido solo puede contener letras y espacios";
     }
     
-    if(empty($_POST['telefono'])) {
-        $errores[] = "El teléfono es requerido";
-    } elseif(!preg_match('/^\d{4}-\d{7}$/', $_POST['telefono'])) {
+    if(!empty($_POST['telefono']) && !preg_match('/^\d{4}-\d{7}$/', $_POST['telefono'])) {
         $errores[] = "El teléfono debe tener el formato: 0412-1234567";
     }
     
@@ -199,9 +158,11 @@ if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
     $cedula = $_POST['cedula'];
     $nombre = trim($_POST['nombre']);
     $apellido = trim($_POST['apellido']);
-    $telefono = trim($_POST['telefono']);
-    $id_usuario = $_POST['id_usuario'];
-    $id_especialidad = isset($_POST['id_especialidad']) && !empty($_POST['id_especialidad']) ? $_POST['id_especialidad'] : null;
+    $telefono = !empty($_POST['telefono']) ? trim($_POST['telefono']) : null;
+    
+    // id_usuario siempre null
+    $id_usuario = null;
+    $id_especialidad = $_POST['idEspecialidad'];
 
     $datos = $ent->ActualizarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $id_especialidad);
     
@@ -211,7 +172,7 @@ if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
         exit;
     } else {
         $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo actualizar los datos.'];
-        $ced_enc = base64_encode($cedula);
+        $ced_enc = base64_encode($_POST['cedula']);
         header("Location: ../vista/entrenadores/edit_entrenador.php?ced=$ced_enc");
         exit;
     }
@@ -222,10 +183,9 @@ if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
 ############################################################################
 if(isset($_GET['E']) && $_GET['E'] == "eli"){
     $ced = base64_decode($_GET['I']);
-    $ent->setCedula($ced);
-
+    
     try {
-        $datos = $ent->EliminarEntrenador($ent->getCedula());
+        $datos = $ent->EliminarEntrenador($ced);
         
         if($datos){
             $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Entrenador eliminado con éxito.'];

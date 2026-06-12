@@ -434,6 +434,22 @@ class Usuario {
         }
     }
 
+    public function registrarBitacoraSesion($idUsuario, $accion, $descripcion){
+        include("conexion.php");
+
+        $sql = $conex->prepare("
+            INSERT INTO BITACORA_SESION
+            (idUsuario, accion, descripcion, fecha)
+            VALUES (?, ?, ?, NOW())
+        ");
+
+        return $sql->execute([
+            $idUsuario,
+            $accion,
+            $descripcion
+        ]);
+    }
+
     ############################################################################
     ### VERIFICAR EXISTENCIA POR NOMBRE DE USUARIO #############################
     ############################################################################
@@ -493,6 +509,218 @@ class Usuario {
         } catch (PDOException $e) {
             error_log("Error en inicio de sesión: " . $e->getMessage());
             return false;
+        }
+    }
+
+        ############################################################################
+    ### CAMBIAR USUARIO Y CONTRASEÑA ##########################################
+    ############################################################################
+    public function CambiarUsuario($idUsuario, $nombreUsuario, $contrasena_actual, $contrasena_nueva, $confirmar_contrasena){
+        include("conexion.php");
+        
+        try {
+            // Validaciones
+            if(empty($nombreUsuario)) {
+                return ['success' => false, 'message' => 'El nombre de usuario es requerido'];
+            }
+            
+            if(!$this->validarNombreUsuario($nombreUsuario)) {
+                return ['success' => false, 'message' => 'El nombre de usuario debe tener entre 3 y 50 caracteres y solo puede contener letras, números, puntos, guiones o guión bajo'];
+            }
+            
+            if(empty($contrasena_actual)) {
+                return ['success' => false, 'message' => 'Debe ingresar su contraseña actual'];
+            }
+            
+            if(empty($contrasena_nueva)) {
+                return ['success' => false, 'message' => 'La nueva contraseña es requerida'];
+            }
+            
+            if(strlen($contrasena_nueva) < 6) {
+                return ['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres'];
+            }
+            
+            if($contrasena_nueva !== $confirmar_contrasena) {
+                return ['success' => false, 'message' => 'Las contraseñas nuevas no coinciden'];
+            }
+            
+            // Verificar que la contraseña actual sea correcta
+            $sql = $conex->prepare("SELECT contrasena FROM USUARIO WHERE idUsuario = ?");
+            $sql->execute([$idUsuario]);
+            $usuario = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            if(!$usuario) {
+                return ['success' => false, 'message' => 'Usuario no encontrado'];
+            }
+            
+            if(!password_verify($contrasena_actual, $usuario['contrasena'])) {
+                return ['success' => false, 'message' => 'Contraseña actual incorrecta'];
+            }
+            
+            // Verificar si el nuevo nombre de usuario ya existe (si cambió)
+            if($nombreUsuario != $_SESSION['usu_ses']) {
+                $sql_check = $conex->prepare("SELECT idUsuario FROM USUARIO WHERE nombreUsuario = ? AND idUsuario != ?");
+                $sql_check->execute([$nombreUsuario, $idUsuario]);
+                if($sql_check->rowCount() > 0) {
+                    return ['success' => false, 'message' => 'El nombre de usuario ya está en uso por otro usuario'];
+                }
+            }
+            
+            // Encriptar nueva contraseña
+            $hashedPassword = password_hash($contrasena_nueva, PASSWORD_DEFAULT);
+            
+            // Actualizar usuario y contraseña
+            $sql = $conex->prepare("UPDATE USUARIO SET nombreUsuario = ?, contrasena = ? WHERE idUsuario = ?");
+            $actualizar = $sql->execute([$nombreUsuario, $hashedPassword, $idUsuario]);
+            
+            if($actualizar) {
+                // Actualizar sesión con el nuevo nombre de usuario
+                $_SESSION['usu_ses'] = $nombreUsuario;
+                
+                // Registrar en bitácora
+                $this->registrarBitacoraSesion(
+                    $idUsuario,
+                    'CAMBIAR_CREDENCIALES',
+                    "Usuario cambió su nombre de usuario y/o contraseña"
+                );
+                
+                return ['success' => true, 'message' => 'Credenciales actualizadas con éxito'];
+            }
+            
+            return ['success' => false, 'message' => 'No se pudieron actualizar las credenciales'];
+            
+        } catch (PDOException $e) {
+            error_log("Error al cambiar credenciales: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error en la base de datos'];
+        }
+    }
+    
+    ############################################################################
+    ### CAMBIAR SOLO CONTRASEÑA ################################################
+    ############################################################################
+    public function CambiarContrasena($idUsuario, $contrasena_actual, $contrasena_nueva, $confirmar_contrasena){
+        include("conexion.php");
+        
+        try {
+            // Validaciones
+            if(empty($contrasena_actual)) {
+                return ['success' => false, 'message' => 'Debe ingresar su contraseña actual'];
+            }
+            
+            if(empty($contrasena_nueva)) {
+                return ['success' => false, 'message' => 'La nueva contraseña es requerida'];
+            }
+            
+            if(strlen($contrasena_nueva) < 6) {
+                return ['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres'];
+            }
+            
+            if($contrasena_nueva !== $confirmar_contrasena) {
+                return ['success' => false, 'message' => 'Las contraseñas nuevas no coinciden'];
+            }
+            
+            // Verificar que la contraseña actual sea correcta
+            $sql = $conex->prepare("SELECT contrasena FROM USUARIO WHERE idUsuario = ?");
+            $sql->execute([$idUsuario]);
+            $usuario = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            if(!$usuario) {
+                return ['success' => false, 'message' => 'Usuario no encontrado'];
+            }
+            
+            if(!password_verify($contrasena_actual, $usuario['contrasena'])) {
+                return ['success' => false, 'message' => 'Contraseña actual incorrecta'];
+            }
+            
+            // Encriptar nueva contraseña
+            $hashedPassword = password_hash($contrasena_nueva, PASSWORD_DEFAULT);
+            
+            // Actualizar solo contraseña
+            $sql = $conex->prepare("UPDATE USUARIO SET contrasena = ? WHERE idUsuario = ?");
+            $actualizar = $sql->execute([$hashedPassword, $idUsuario]);
+            
+            if($actualizar) {
+                // Registrar en bitácora
+                $this->registrarBitacoraSesion(
+                    $idUsuario,
+                    'CAMBIAR_CONTRASENA',
+                    "Usuario cambió su contraseña"
+                );
+                
+                return ['success' => true, 'message' => 'Contraseña actualizada con éxito'];
+            }
+            
+            return ['success' => false, 'message' => 'No se pudo actualizar la contraseña'];
+            
+        } catch (PDOException $e) {
+            error_log("Error al cambiar contraseña: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error en la base de datos'];
+        }
+    }
+    
+    ############################################################################
+    ### CAMBIAR SOLO NOMBRE DE USUARIO #########################################
+    ############################################################################
+    public function CambiarNombreUsuario($idUsuario, $nombreUsuario, $contrasena_actual){
+        include("conexion.php");
+        
+        try {
+            // Validaciones
+            if(empty($nombreUsuario)) {
+                return ['success' => false, 'message' => 'El nombre de usuario es requerido'];
+            }
+            
+            if(!$this->validarNombreUsuario($nombreUsuario)) {
+                return ['success' => false, 'message' => 'El nombre de usuario debe tener entre 3 y 50 caracteres y solo puede contener letras, números, puntos, guiones o guión bajo'];
+            }
+            
+            if(empty($contrasena_actual)) {
+                return ['success' => false, 'message' => 'Debe ingresar su contraseña actual para confirmar'];
+            }
+            
+            // Verificar que la contraseña actual sea correcta
+            $sql = $conex->prepare("SELECT contrasena FROM USUARIO WHERE idUsuario = ?");
+            $sql->execute([$idUsuario]);
+            $usuario = $sql->fetch(PDO::FETCH_ASSOC);
+            
+            if(!$usuario) {
+                return ['success' => false, 'message' => 'Usuario no encontrado'];
+            }
+            
+            if(!password_verify($contrasena_actual, $usuario['contrasena'])) {
+                return ['success' => false, 'message' => 'Contraseña actual incorrecta'];
+            }
+            
+            // Verificar si el nuevo nombre de usuario ya existe
+            $sql_check = $conex->prepare("SELECT idUsuario FROM USUARIO WHERE nombreUsuario = ? AND idUsuario != ?");
+            $sql_check->execute([$nombreUsuario, $idUsuario]);
+            if($sql_check->rowCount() > 0) {
+                return ['success' => false, 'message' => 'El nombre de usuario ya está en uso'];
+            }
+            
+            // Actualizar nombre de usuario
+            $sql = $conex->prepare("UPDATE USUARIO SET nombreUsuario = ? WHERE idUsuario = ?");
+            $actualizar = $sql->execute([$nombreUsuario, $idUsuario]);
+            
+            if($actualizar) {
+                // Actualizar sesión
+                $_SESSION['usu_ses'] = $nombreUsuario;
+                
+                // Registrar en bitácora
+                $this->registrarBitacoraSesion(
+                    $idUsuario,
+                    'CAMBIAR_NOMBRE_USUARIO',
+                    "Usuario cambió su nombre de usuario a: $nombreUsuario"
+                );
+                
+                return ['success' => true, 'message' => 'Nombre de usuario actualizado con éxito'];
+            }
+            
+            return ['success' => false, 'message' => 'No se pudo actualizar el nombre de usuario'];
+            
+        } catch (PDOException $e) {
+            error_log("Error al cambiar nombre de usuario: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error en la base de datos'];
         }
     }
 }

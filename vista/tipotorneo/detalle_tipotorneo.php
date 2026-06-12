@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Verificar sesión antes de mostrar el dashboard
 include_once("../../controlador/verificar_sesion.php");
 ?>

@@ -340,7 +340,165 @@ if(isset($_POST['aceptar']) && $_POST['aceptar'] == "aceptar"){
     }
 }
 
+############################################################################
+### CAMBIAR CREDENCIALES ###################################################
+############################################################################
+if(isset($_POST['cambiar']) && $_POST['cambiar'] == "cambiar"){
+    
+    // Verificar que el usuario esté logueado
+    if(!isset($_SESSION['id_ses'])) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Debe iniciar sesión para realizar esta acción.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+    
+    // Guardar la URL de retorno si existe
+    $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : '../vista/usuario/usuario.php';
+    
+    $idUsuario = $_SESSION['id_ses'];
+    $nombreUsuario = trim($_POST['nombre_usuario']);
+    $contrasena_actual = $_POST['contrasena_actual'];
+    $contrasena_nueva = $_POST['contrasena_nueva'];
+    $confirmar_contrasena = $_POST['confirmar_contrasena'];
+    
+    // Validar campos obligatorios
+    $errores = [];
+    
+    if(empty($nombreUsuario)) {
+        $errores[] = "El nombre de usuario es requerido";
+    }
+    
+    if(empty($contrasena_actual)) {
+        $errores[] = "Debe ingresar su contraseña actual";
+    }
+    
+    if(empty($contrasena_nueva)) {
+        $errores[] = "La nueva contraseña es requerida";
+    } elseif(strlen($contrasena_nueva) < 6) {
+        $errores[] = "La nueva contraseña debe tener al menos 6 caracteres";
+    }
+    
+    if($contrasena_nueva !== $confirmar_contrasena) {
+        $errores[] = "Las contraseñas nuevas no coinciden";
+    }
+    
+    if(!empty($errores)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Validación', 'text' => implode('<br>', $errores)];
+        header("Location: ../vista/usuario/cambiar_credenciales.php");
+        exit;
+    }
+    
+    // Llamar al método de la clase
+    $resultado = $usuario->CambiarUsuario($idUsuario, $nombreUsuario, $contrasena_actual, $contrasena_nueva, $confirmar_contrasena);
+    
+    if($resultado['success']) {
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => $resultado['message']];
+        // Redirigir a la página anterior o al dashboard
+        header("Location: " . $return_url);
+        exit;
+    } else {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $resultado['message']];
+        header("Location: ../vista/usuario/cambiar_credenciales.php");
+        exit;
+    }
+}
 
+############################################################################
+### CAMBIAR SOLO CONTRASEÑA ################################################
+############################################################################
+if(isset($_POST['cambiar_contrasena']) && $_POST['cambiar_contrasena'] == "cambiar_contrasena"){
+    
+    if(!isset($_SESSION['id_ses'])) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Debe iniciar sesión.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+    
+    $idUsuario = $_SESSION['id_ses'];
+    $contrasena_actual = $_POST['contrasena_actual'];
+    $contrasena_nueva = $_POST['contrasena_nueva'];
+    $confirmar_contrasena = $_POST['confirmar_contrasena'];
+    
+    $errores = [];
+    
+    if(empty($contrasena_actual)) {
+        $errores[] = "Debe ingresar su contraseña actual";
+    }
+    
+    if(empty($contrasena_nueva)) {
+        $errores[] = "La nueva contraseña es requerida";
+    } elseif(strlen($contrasena_nueva) < 6) {
+        $errores[] = "La nueva contraseña debe tener al menos 6 caracteres";
+    }
+    
+    if($contrasena_nueva !== $confirmar_contrasena) {
+        $errores[] = "Las contraseñas nuevas no coinciden";
+    }
+    
+    if(!empty($errores)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Validación', 'text' => implode('<br>', $errores)];
+        header("Location: ../vista/usuario/cambiar_contrasena.php");
+        exit;
+    }
+    
+    $resultado = $usuario->CambiarContrasena($idUsuario, $contrasena_actual, $contrasena_nueva, $confirmar_contrasena);
+    
+    if($resultado['success']) {
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => $resultado['message']];
+        header("Location: ../vista/dashboard.php");
+        exit;
+    } else {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $resultado['message']];
+        header("Location: ../vista/usuario/cambiar_contrasena.php");
+        exit;
+    }
+}
+
+############################################################################
+### CAMBIAR SOLO NOMBRE DE USUARIO #########################################
+############################################################################
+if(isset($_POST['cambiar_nombre']) && $_POST['cambiar_nombre'] == "cambiar_nombre"){
+    
+    if(!isset($_SESSION['id_ses'])) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Debe iniciar sesión.'];
+        header("Location: ../vista/loyaut/login.php");
+        exit;
+    }
+    
+    $idUsuario = $_SESSION['id_ses'];
+    $nombreUsuario = trim($_POST['nombre_usuario']);
+    $contrasena_actual = $_POST['contrasena_actual'];
+    
+    $errores = [];
+    
+    if(empty($nombreUsuario)) {
+        $errores[] = "El nombre de usuario es requerido";
+    } elseif(!validarNombreUsuario($nombreUsuario)) {
+        $errores[] = "El nombre de usuario debe tener entre 3 y 50 caracteres";
+    }
+    
+    if(empty($contrasena_actual)) {
+        $errores[] = "Debe ingresar su contraseña actual para confirmar";
+    }
+    
+    if(!empty($errores)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Validación', 'text' => implode('<br>', $errores)];
+        header("Location: ../vista/usuario/cambiar_nombre.php");
+        exit;
+    }
+    
+    $resultado = $usuario->CambiarNombreUsuario($idUsuario, $nombreUsuario, $contrasena_actual);
+    
+    if($resultado['success']) {
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => $resultado['message']];
+        header("Location: ../vista/dashboard.php");
+        exit;
+    } else {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $resultado['message']];
+        header("Location: ../vista/usuario/cambiar_nombre.php");
+        exit;
+    }
+}
 
 
 ?>

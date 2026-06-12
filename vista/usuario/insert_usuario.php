@@ -36,67 +36,49 @@ include_once("../../controlador/verificar_sesion.php");
     <!-- CONTENIDO -->
     <div class="main-content">
         <div class="catalog-header">
-            <h1 class="page-title">
-                <i class="fas fa-plus-circle me-2"></i> Registrar Usuario
-            </h1>
+         
             <a href="./usuario.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i> Volver
             </a>
         </div>
 
         <div class="form-card">
-            <div class="alert alert-info mb-4">
-                <i class="fas fa-info-circle me-2"></i>
-                <strong>Información:</strong>
-                <ul class="mt-2 mb-0">
-                    <li>El nombre de usuario debe tener entre 3 y 50 caracteres</li>
-                    <li>Puede contener letras, números, puntos, guiones o guión bajo</li>
-                    <li>La contraseña debe tener al menos 6 caracteres</li>
-                    <li>Para crear un entrenador, seleccione el rol "entrenador" y luego asígnelo desde el módulo de entrenadores</li>
-                </ul>
-            </div>
+            
 
             <form action="../../controlador/ctl_usuario.php" method="POST" onsubmit="return validarUsuario(event, false)">
                 <input type="hidden" name="registrar" value="registrar">
                 
                 <h3 class="section-title">Datos de Usuario</h3>
+                <div class="row">
 
-                <!-- NOMBRE USUARIO -->
-                <div class="mb-3">
-                    <label class="form-label required-star">Nombre de Usuario</label>
-                    <input type="text" class="form-control" name="nombreUsuario" id="nombreUsuario" placeholder="Ingrese nombre de usuario" value="<?php echo isset($_POST['nombreUsuario']) ? htmlspecialchars($_POST['nombreUsuario']) : ''; ?>">
-                    <div class="invalid-feedback-real" id="nombreUsuarioFeedback"></div>
-                </div>
+                    <!-- NOMBRE USUARIO -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label required-star">Nombre de Usuario</label>
+                        <input type="text" class="form-control" name="nombreUsuario" id="nombreUsuario" placeholder="Ingrese nombre de usuario" value="<?php echo isset($_POST['nombreUsuario']) ? htmlspecialchars($_POST['nombreUsuario']) : ''; ?>">
+                        <div class="invalid-feedback-real" id="nombreUsuarioFeedback"></div>
+                    </div>
 
-                <!-- CONTRASEÑA -->
-                <div class="mb-3">
-                    <label class="form-label required-star">Contraseña</label>
-                    <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Ingrese contraseña">
-                    <div class="invalid-feedback-real" id="contrasenaFeedback"></div>
-                </div>
+                    <!-- CONTRASEÑA -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label required-star">Contraseña</label>
+                        <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Ingrese contraseña">
+                        <div class="invalid-feedback-real" id="contrasenaFeedback"></div>
+                    </div>
 
-                <!-- ROL -->
-                <div class="mb-3">
-                    <label class="form-label required-star">Rol</label>
-                    <select class="form-select" name="rol" id="rol">
-                        <option value="">Seleccione un rol</option>
-                        <option value="admin" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'admin') ? 'selected' : ''; ?>>Administrador</option>
-                        <option value="entrenador" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'entrenador') ? 'selected' : ''; ?>>Entrenador</option>
-                        <option value="alumno" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'alumno') ? 'selected' : ''; ?>>Alumno</option>
-                    </select>
-                    <div class="invalid-feedback-real" id="rolFeedback"></div>
+                    <!-- ROL -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label required-star">Rol</label>
+                        <select class="form-select" name="rol" id="rol">
+                            <option value="">Seleccione un rol</option>
+                            <option value="admin" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'admin') ? 'selected' : ''; ?>>Administrador</option>
+                            <option value="entrenador" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'entrenador') ? 'selected' : ''; ?>>Entrenador</option>
+                            <option value="alumno" <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'alumno') ? 'selected' : ''; ?>>Alumno</option>
+                        </select>
+                        <div class="invalid-feedback-real" id="rolFeedback"></div>
+                    </div>
                 </div>
-
-                <!-- ESTATUS -->
-                <div class="mb-3">
-                    <label class="form-label required-star">Estatus</label>
-                    <select class="form-select" name="estatus" id="estatus">
-                        <option value="">Seleccione un estatus</option>
-                        <option value="activo" <?php echo (isset($_POST['estatus']) && $_POST['estatus'] == 'activo') ? 'selected' : ''; ?>>Activo</option>
-                        <option value="inactivo" <?php echo (isset($_POST['estatus']) && $_POST['estatus'] == 'inactivo') ? 'selected' : ''; ?>>Inactivo</option>
-                    </select>
-                    <div class="invalid-feedback-real" id="estatusFeedback"></div>
-                </div>
+               
+                    <input type="hidden" class="form-select" name="estatus" id="estatus" value="activo">
 
                 <!-- BOTONES -->
                 <div class="form-actions">

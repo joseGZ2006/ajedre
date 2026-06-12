@@ -8,6 +8,7 @@ include("../../modelo/clase_especialidad.php");
 include_once("../../controlador/verificar_sesion.php");
 
 
+
 $espe = new Especialidad();
 $especialidad = $espe->ListarEspecialidad();
 
@@ -79,36 +80,7 @@ $especialidad = $espe->ListarEspecialidad();
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const botonesEliminar = document.querySelectorAll('.btn-delete');
-    
-    botonesEliminar.forEach((boton) => {
-        boton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const nombre = this.getAttribute('data-nombre');
-            const idEspecialidad = this.getAttribute('data-idEspecialidad');
-            
-            Swal.fire({
-                title: '¿Eliminar especialidad?',
-                text: `¿Estás seguro de que deseas eliminar la especialidad "${nombre}"?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `../../controlador/ctl_especialidad.php?E=eli&I=${btoa(idEspecialidad)}`;
-                }
-            });
-        });
-    });
-});
-</script>
+<?php include '../assets/inc/eliminar_especialidad.php'; ?>
 
 </body>
 

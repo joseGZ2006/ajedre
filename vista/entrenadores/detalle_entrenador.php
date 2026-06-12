@@ -1,12 +1,8 @@
 <?php
 session_start();
+include("../../controlador/verificar_sesion.php");
 include("../../modelo/conexion.php");
 include("../../modelo/clase_entrenador.php");
-
-
-// Verificar sesión antes de mostrar el dashboard
-include_once("../../controlador/verificar_sesion.php");
-
 
 $ced = isset($_GET['ced']) ? base64_decode($_GET['ced']) : null;
 
@@ -24,11 +20,7 @@ $cedula = $datos[1];
 $nombre = $datos[2];
 $apellido = $datos[3];
 $telefono = $datos[4];
-$id_usuario = $datos[5];
-$id__especialidad = $datos[6];
-$nombre_usuario = $datos[7];
-$rol = $datos[8];
-$especialidad_nombre = $datos[9];
+$especialidad_nombre = isset($datos[7]) ? $datos[7] : 'No asignada';
 ?>
 
 <!DOCTYPE html>
@@ -61,11 +53,6 @@ $especialidad_nombre = $datos[9];
         <div class="detail-info-grid">
             <div class="info-group">
                 <label><i class="fas fa-user me-2"></i>Información Personal</label>
-
-                <div class="info-row">
-                    <span class="info-label">Cédula:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($cedula); ?></span>
-                </div>
                 
                 <div class="info-row">
                     <span class="info-label">Nombres:</span>
@@ -77,15 +64,19 @@ $especialidad_nombre = $datos[9];
                     <span class="info-value"><?php echo htmlspecialchars($apellido); ?></span>
                 </div>
                 
+                <div class="info-row">
+                    <span class="info-label">Cédula:</span>
+                    <span class="info-value"><?php echo htmlspecialchars($cedula); ?></span>
+                </div>
                 
                 <div class="info-row">
                     <span class="info-label">Teléfono:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($telefono ?: 'No tiene teléfono'); ?></span>
+                    <span class="info-value"><?php echo htmlspecialchars($telefono ?: 'No registrado'); ?></span>
                 </div>
-
+                
                 <div class="info-row">
                     <span class="info-label">Especialidad:</span>
-                    <span class="info-value"><?php echo htmlspecialchars($especialidad_nombre ?: 'No tiene especialidad asignada'); ?></span>
+                    <span class="info-value"><?php echo htmlspecialchars($especialidad_nombre); ?></span>
                 </div>
             </div>
         </div>

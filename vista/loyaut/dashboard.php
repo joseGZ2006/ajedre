@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Verificar sesión antes de mostrar el dashboard
 include_once("../../controlador/verificar_sesion.php");
 ?>
@@ -86,7 +87,8 @@ include_once("../../controlador/verificar_sesion.php");
             </div>
         </div>
     </div>
-    <?php include '../assets/inc/flash.php'; ?>
+    
+<?php include '../assets/inc/flash.php'; ?>
     <!-- Scripts -->
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>

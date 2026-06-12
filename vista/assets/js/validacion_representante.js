@@ -41,14 +41,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const regex = {
         cedula: /^\d{7,8}$/, 
         soloLetras: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-        telefono: /^[0-9]{4}-[0-9]{7}$/,
-        correo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        correo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        telefono: /^(0412|0414|0416|0424|0410|0426)-?\d{7}$/  // Acepta con o sin guión
     };
 
     function formatTelefono(value) {
+        // Limpiar cualquier caracter que no sea número
         const digits = value.replace(/\D/g, '');
-        if (digits.length <= 4) return digits;
-        return digits.slice(0, 4) + '-' + digits.slice(4, 11);
+        
+        // Si tiene exactamente 11 dígitos (formato Venezuela: 0412xxxxxxx)
+        if (digits.length === 11) {
+            // Formatear como 0412-1234567 (4 dígitos + guión + 7 dígitos)
+            const prefix = digits.slice(0, 4);
+            const number = digits.slice(4);
+            return prefix + '-' + number;
+        }
+        
+        return value;
     }
 
     // ==================== VALIDACIONES INDIVIDUALES ====================
@@ -104,10 +113,20 @@ document.addEventListener('DOMContentLoaded', function() {
             clearFeedback(input);
             return true; // Campo opcional
         }
-        if (!regex.telefono.test(value)) {
-            showError(input, 'Formato inválido: use 0412-1234567 (4 dígitos - 7 dígitos)');
+        
+        // Limpiar el valor de guiones para validar
+        const cleanValue = value.replace(/-/g, '');
+        
+        if (cleanValue.length !== 11) {
+            showError(input, 'El teléfono debe tener exactamente 11 dígitos (ejemplo: 0412-1234567)');
             return false;
         }
+        
+        if (!regex.telefono.test(cleanValue)) {
+            showError(input, 'Formato inválido. Use un número válido de Venezuela: 0412-1234567');
+            return false;
+        }
+        
         showValid(input);
         return true;
     }
@@ -136,11 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ==================== FILTROS EN TIEMPO REAL ====================
     
-    // Filtrar cédula: solo números
+    // Filtrar cédula: solo números y máximo 8 dígitos
     const cedulaInput = document.getElementById('cedula');
     if (cedulaInput) {
         cedulaInput.addEventListener('input', function(e) {
-            this.value = this.value.replace(/[^0-9]/g, '');
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);
             validarCedula(this.value, this);
         });
         cedulaInput.addEventListener('blur', function() {
@@ -172,14 +191,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Filtrar y validar teléfono
+    // Filtrar y validar teléfono - máximo 12 caracteres (formato: 0412-1234567)
     const telefonoInput = document.getElementById('telefono');
     if (telefonoInput) {
         telefonoInput.addEventListener('input', function(e) {
-            this.value = formatTelefono(this.value);
+            // Permitir solo números y guiones
+            let value = this.value.replace(/[^0-9-]/g, '');
+            
+            // Limitar a 12 caracteres máximo
+            if (value.length > 12) {
+                value = value.slice(0, 12);
+            }
+            
+            // Formatear automáticamente
+            const digits = value.replace(/-/g, '');
+            if (digits.length === 11) {
+                value = formatTelefono(value);
+            }
+            
+            this.value = value;
             validarTelefono(this.value, this);
         });
+        
         telefonoInput.addEventListener('blur', function() {
+            // Formatear al perder el foco si tiene 11 dígitos
+            const digits = this.value.replace(/-/g, '');
+            if (digits.length === 11) {
+                this.value = formatTelefono(this.value);
+            }
             validarTelefono(this.value, this);
         });
     }
@@ -228,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const opcionalesValidos = isTelefonoValid && isCorreoValid;
 
         if (!obligatoriosValidos) {
-            event.preventDefault();
+            if (event) event.preventDefault();
             Swal.fire({
                 icon: 'error',
                 title: 'Campos obligatorios incompletos',
@@ -240,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (!opcionalesValidos) {
-            event.preventDefault();
+            if (event) event.preventDefault();
             Swal.fire({
                 icon: 'error',
                 title: 'Campos con formato inválido',
@@ -250,16 +289,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        event.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Representante agregado exitosamente',
-            timer: 1500,
-            showConfirmButton: false
-        }).then(() => {
-            event.target.submit();
-        });
-
+        
+            const form = document.getElementById('form');
+            if (form) {
+                form.submit();
+            }
+       
+        
         return false;
     };
     

@@ -111,6 +111,8 @@ function getEstatusBadge($estatus) {
         </div>
 
         <!-- INFORMACIÓN DE A QUIÉN PERTENECE -->
+        <?php if($usuarioCompleto && $usuarioCompleto['tipo_asociacion']): ?>
+        <?php if($usuarioCompleto['tipo_asociacion'] == 'entrenador'): ?>
         <div class="detail-info-grid">
             <div class="info-group">
                 <label>
@@ -118,8 +120,7 @@ function getEstatusBadge($estatus) {
                     Asociación
                 </label>
             
-            <?php if($usuarioCompleto && $usuarioCompleto['tipo_asociacion']): ?>
-                <?php if($usuarioCompleto['tipo_asociacion'] == 'entrenador'): ?>
+           
                    
                    
                     <div class="info-row">
@@ -215,18 +216,7 @@ function getEstatusBadge($estatus) {
                     <?php endif; ?>
                 <?php endif; ?>
             <?php else: ?>
-                <div class="assigned-badge unassigned">
-                    <i class="fas fa-user-slash me-1"></i> No asociado
-                </div>
-                <p class="text-muted mt-2 mb-0">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Este usuario no está asociado a ningún entrenador o alumno.
-                    <?php if($rol == 'entrenador'): ?>
-                        <br>Para asociarlo, vaya al módulo de <a href="../entrenadores/entrenador.php">Entrenadores</a> y asígnelo al momento de registrar o editar un entrenador.
-                    <?php elseif($rol == 'alumno'): ?>
-                        <br>Para asociarlo, vaya al módulo de <a href="../alumnos/alumno.php">Alumnos</a> y asígnelo al momento de registrar o editar un alumno.
-                    <?php endif; ?>
-                </p>
+                
             <?php endif; ?>
         </div>
     </div>

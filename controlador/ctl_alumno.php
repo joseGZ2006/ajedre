@@ -1,136 +1,173 @@
 <?php
 session_start();
+
 include("../modelo/conexion.php");
-include("../modelo/modelo_alumno.php");
+include("../modelo/clase_alumno.php");
 
 $alumno = new Alumno();
 
 // Función para sanitizar datos
 function sanitizar($dato) {
-    return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
+    $dato = trim($dato);
+    $dato = strip_tags($dato);
+    $dato = htmlspecialchars($dato);
+    return $dato;
 }
 
-// Función para validar fechas
+// Función para validar fecha
 function validarFecha($fecha) {
     $date = DateTime::createFromFormat('Y-m-d', $fecha);
     return $date && $date->format('Y-m-d') === $fecha;
 }
 
-############################################################################
-### REGISTRAR ##############################################################
-############################################################################
-if(isset($_POST['registrar']) && $_POST['registrar']=="registrar"){
-    try {
-        // Sanitizar datos
-        $cedula = sanitizar($_POST['cedula']);
-        $nombre = sanitizar($_POST['nombre']);
-        $apellido = sanitizar($_POST['apellido']);
-        $sexo = sanitizar($_POST['sexo']);
-        $fechaNacimiento = sanitizar($_POST['fechaNacimiento']);
-        $telefono = sanitizar($_POST['telefono']);
-        $localidadMunicipio = sanitizar($_POST['localidadMunicipio']);
-        $correo = sanitizar($_POST['correo']);
-        $club = sanitizar($_POST['club']);
-        $direccion = sanitizar($_POST['direccion']);
-        $dondeEstudia = sanitizar($_POST['dondeEstudia']);
-        $grado = sanitizar($_POST['grado']);
-        $seccion = sanitizar($_POST['seccion']);
-        $deporte = sanitizar($_POST['deporte']);
-        $centroIniciacionDeportivo = sanitizar($_POST['centroIniciacionDeportivo']);
-        $idRepresentante = !empty($_POST['idRepresentante']) ? sanitizar($_POST['idRepresentante']) : null;
-        $idUsuario = !empty($_POST['idUsuario']) ? sanitizar($_POST['idUsuario']) : null;
-        $estatus = sanitizar($_POST['estatus']);
+// ==================== REGISTRAR ====================
+if (isset($_POST['registrar']) && $_POST['registrar'] == 'registrar') {
+    $errores = [];
+    
+    // Sanitizar datos
+    $cedula = sanitizar($_POST['cedula']);
+    $nombre = sanitizar($_POST['nombre']);
+    $apellido = sanitizar($_POST['apellido']);
+    $sexo = sanitizar($_POST['sexo']);
+    $fechaNacimiento = sanitizar($_POST['fechaNacimiento']);
+    $telefono = !empty($_POST['telefono']) ? sanitizar($_POST['telefono']) : null;
+    $localidadMunicipio = sanitizar($_POST['localidadMunicipio']);
+    $correo = !empty($_POST['correo']) ? sanitizar($_POST['correo']) : null;
+    $club = !empty($_POST['club']) ? sanitizar($_POST['club']) : null;
+    $direccion = sanitizar($_POST['direccion']);
+    
+    // Campos condicionales - Estudia
+    $estudia = sanitizar($_POST['estudia']);
+    $dondeEstudia = null;
+    $grado = null;
+    $seccion = null;
+    if($estudia == 'Si') {
+        $dondeEstudia = !empty($_POST['dondeEstudia']) ? sanitizar($_POST['dondeEstudia']) : null;
+        $grado = !empty($_POST['grado']) ? sanitizar($_POST['grado']) : null;
+        $seccion = !empty($_POST['seccion']) ? sanitizar($_POST['seccion']) : null;
+    }
+    
+    // Campos condicionales - Deporte
+    $practicaDeporte = sanitizar($_POST['practicaDeporte']);
+    $deporte = null;
+    $centroIniciacionDeportivo = null;
+    if($practicaDeporte == 'Si') {
+        $deporte = !empty($_POST['deporte']) ? sanitizar($_POST['deporte']) : null;
+        $centroIniciacionDeportivo = !empty($_POST['centroIniciacionDeportivo']) ? sanitizar($_POST['centroIniciacionDeportivo']) : null;
+    }
+    
+    $idRepresentante = !empty($_POST['idRepresentante']) ? sanitizar($_POST['idRepresentante']) : null;
+    $estatus = 'activo'; // Siemre activo al registrar
 
-        // Validar campos requeridos
-        if(empty($cedula) || empty($nombre) || empty($apellido) || empty($sexo) || empty($fechaNacimiento) || empty($estatus)) {
-            throw new Exception("Todos los campos marcados con * son obligatorios.");
-        }
+    // Validaciones
+    if(empty($cedula)) {
+        $errores[] = "La cédula es requerida";
+    } elseif(!preg_match('/^\d{7,10}$/', $cedula)) {
+        $errores[] = "La cédula debe tener entre 7 y 10 dígitos numéricos";
+    }
+    
+    if(empty($nombre)) {
+        $errores[] = "El nombre es requerido";
+    } elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{2,50}$/', $nombre)) {
+        $errores[] = "El nombre solo puede contener letras";
+    }
+    
+    if(empty($apellido)) {
+        $errores[] = "El apellido es requerido";
+    } elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{2,50}$/', $apellido)) {
+        $errores[] = "El apellido solo puede contener letras";
+    }
+    
+    if(empty($sexo)) {
+        $errores[] = "El sexo es requerido";
+    } elseif(!in_array($sexo, ['M', 'F'])) {
+        $errores[] = "Sexo no válido";
+    }
+    
+    if(empty($fechaNacimiento)) {
+        $errores[] = "La fecha de nacimiento es requerida";
+    } elseif(!validarFecha($fechaNacimiento)) {
+        $errores[] = "Formato de fecha inválido";
+    }
+    
+    if(!empty($telefono) && !preg_match('/^\d{4}-\d{7}$/', $telefono)) {
+        $errores[] = "El teléfono debe tener el formato: 0412-1234567";
+    }
+    
+    if(!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        $errores[] = "El correo electrónico no es válido";
+    }
+    
+    if(empty($localidadMunicipio)) {
+        $errores[] = "La localidad es requerida";
+    }
+    
+    if(empty($direccion)) {
+        $errores[] = "La dirección es requerida";
+    }
+    
+    // Validar representante para menores de edad
+    $edad = date_diff(date_create($fechaNacimiento), date_create('today'))->y;
+    if ($edad < 18 && empty($idRepresentante)) {
+        $errores[] = "Los alumnos menores de 18 años deben tener un representante asignado.";
+    }
+    
+    // Verificar cédula duplicada
+    if($alumno->verificarCedulaExistente($cedula)) {
+        $errores[] = "Ya existe un alumno registrado con esta cédula.";
+    }
+    
+    if(!empty($errores)) {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Validación', 'text' => implode('<br>', $errores)];
+        header("Location: ../vista/alumnos/insert_alumno.php");
+        exit;
+    }
 
-        // Validar formato de fecha
-        if(!validarFecha($fechaNacimiento)) {
-            throw new Exception("Formato de fecha inválido. Use YYYY-MM-DD.");
-        }
-        
-        // Validar representante para menores de edad
-        $edad = date_diff(date_create($fechaNacimiento), date_create('today'))->y;
-        if ($edad < 18 && empty($idRepresentante)) {
-            throw new Exception("Los alumnos menores de 18 años deben tener un representante asignado.");
-        }
-
-        // Registrar alumno
-        $datos = $alumno->RegistrarAlumno(
-            $cedula, $nombre, $apellido, $sexo, $fechaNacimiento,
-            $telefono, $localidadMunicipio, $correo, $club, $direccion,
-            $dondeEstudia, $grado, $seccion, $deporte, $centroIniciacionDeportivo,
-            $idRepresentante, $idUsuario, $estatus
-        );
-        
-        if($datos){
-            $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Alumno Registrado con éxito.'];
-            header("Location: ../vista/alumnos/alumno.php");
-            exit;
-        } else {
-            throw new Exception("No se pudo registrar el alumno.");
-        }
-    } catch (Exception $e) {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $e->getMessage()];
+    $datos = $alumno->RegistrarAlumno(
+        $cedula, $nombre, $apellido, $sexo, $fechaNacimiento,
+        $telefono, $localidadMunicipio, $correo, $club, $direccion,
+        $dondeEstudia, $grado, $seccion, $deporte, $centroIniciacionDeportivo,
+        $idRepresentante, $estatus
+    );
+    
+    if($datos === true){ 
+        $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Alumno registrado con éxito.'];
+        header("Location: ../vista/alumnos/alumno.php");
+        exit;
+    } elseif($datos === 'cedula_exists') {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'La cédula ya está registrada.'];
+        header("Location: ../vista/alumnos/insert_alumno.php");
+        exit;
+    } else {
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo registrar el alumno.'];
         header("Location: ../vista/alumnos/insert_alumno.php");
         exit;
     }
 }
 
-############################################################################
-### LISTAR #################################################################
-############################################################################
+// ==================== LISTAR ====================
 if(isset($_GET['L']) && $_GET['L']=="lis"){
-   
-        $datos = $alumno->ListarAlumnos();
-        
-        if($datos === false || empty($datos)){
-            $_SESSION['flash'] = ['icon' => 'info', 'title' => 'Información', 'text' => 'No hay alumnos registrados.'];
-        }
-        
-        header("Location: ../vista/alumnos/alumno.php");
-        exit;
+    $datos = $alumno->ListarAlumnos();
     
-}
-
-############################################################################
-### LISTAR POR CATEGORIA ###################################################
-############################################################################
-if(isset($_GET['LC']) && $_GET['LC']=="cat"){
-    try {
-        $categoria = isset($_GET['categoria']) ? sanitizar($_GET['categoria']) : null;
-        
-        if(!$categoria) {
-            throw new Exception("Categoría no especificada.");
-        }
-        
-        $datos = $alumno->ListarAlumnosPorCategoria($categoria);
-        
-        if($datos === false || empty($datos)){
-            $_SESSION['flash'] = ['icon' => 'info', 'title' => 'Información', 'text' => "No hay alumnos en la categoría $categoria."];
-        } else {
-            $_SESSION['lista_alumnos'] = $datos;
-        }
-        
-        header("Location: ../vista/alumnos/alumno.php");
-        exit;
-    } catch (Exception $e) {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $e->getMessage()];
-        header("Location: ../vista/alumnos/alumno.php");
-        exit;
+    if($datos === false || empty($datos)){
+        $_SESSION['flash'] = ['icon' => 'info', 'title' => 'Información', 'text' => 'No hay alumnos registrados.'];
     }
+    
+    $_SESSION['lista_alumnos'] = $datos;
+    header("Location: ../vista/alumnos/alumno.php");
+    exit;
 }
 
-#############################################################################
-### CONSULTAR ###############################################################
-#############################################################################
+// ==================== CONSULTAR (VER DETALLE) ====================
 if(isset($_GET['C']) && $_GET['C']=="con"){
     try {
+        if(!isset($_GET['I'])) {
+            throw new Exception("ID no proporcionado.");
+        }
+        
         $ci = base64_decode($_GET['I']);
         
-        if(!preg_match('/^[0-9]{6,10}$/', $ci)) {
+        if(!preg_match('/^\d{7,10}$/', $ci)) {
             throw new Exception("Cédula no válida.");
         }
         
@@ -141,7 +178,7 @@ if(isset($_GET['C']) && $_GET['C']=="con"){
             header("Location: ../vista/alumnos/alumno.php");
             exit;
         } else {
-            // Encriptar datos para enviar por URL
+            // Codificar datos para URL
             $id = base64_encode($datos['idAlumno']);
             $ced = base64_encode($datos['cedula']);
             $nom = base64_encode($datos['nombre']);
@@ -161,10 +198,15 @@ if(isset($_GET['C']) && $_GET['C']=="con"){
             $dep = base64_encode($datos['deporte']);
             $cen = base64_encode($datos['centroIniciacionDeportivo']);
             $rep = base64_encode($datos['idRepresentante']);
-            $usu = base64_encode($datos['idUsuario']);
+            $repNom = base64_encode($datos['nombre_representante'] ?? '');
+            $repApe = base64_encode($datos['apellido_representante'] ?? '');
+            $repTel = base64_encode($datos['telefono_representante'] ?? '');
+            $repPar = base64_encode($datos['parentesco'] ?? '');
             $status = base64_encode($datos['estatus']);
+            $estudia = base64_encode($datos['dondeEstudia'] ? 'Si' : 'No');
+            $practicaDeporte = base64_encode($datos['deporte'] ? 'Si' : 'No');
             
-            header("Location: ../vista/alumnos/detalle_alumno.php?id=$id&a=$ced&b=$nom&c=$ape&d=$sex&e=$fna&f=$edad&g=$cat&h=$tel&i=$loc&j=$ema&k=$club&l=$dir&m=$est&n=$gra&o=$sec&p=$dep&q=$cen&r=$rep&s=$usu&t=$status");
+            header("Location: ../vista/alumnos/detalle_alumno.php?id=$id&ced=$ced&nom=$nom&ape=$ape&sex=$sex&fna=$fna&edad=$edad&cat=$cat&tel=$tel&loc=$loc&ema=$ema&club=$club&dir=$dir&est=$est&gra=$gra&sec=$sec&dep=$dep&cen=$cen&rep=$rep&repNom=$repNom&repApe=$repApe&repTel=$repTel&repPar=$repPar&status=$status&estudia=$estudia&practicaDeporte=$practicaDeporte");
             exit;
         }
     } catch (Exception $e) {
@@ -174,14 +216,16 @@ if(isset($_GET['C']) && $_GET['C']=="con"){
     }
 }
 
-############################################################################
-### MOSTRAR PARA ACTUALIZAR ################################################
-############################################################################
+// ==================== MOSTRAR PARA EDITAR ====================
 if(isset($_GET['M']) && $_GET['M']=="mos"){
     try {
+        if(!isset($_GET['I'])) {
+            throw new Exception("ID no proporcionado.");
+        }
+        
         $ci = base64_decode($_GET['I']);
         
-        if(!preg_match('/^[0-9]{6,10}$/', $ci)) {
+        if(!preg_match('/^\d{7,10}$/', $ci)) {
             throw new Exception("Cédula no válida.");
         }
         
@@ -192,7 +236,7 @@ if(isset($_GET['M']) && $_GET['M']=="mos"){
             header("Location: ../vista/alumnos/alumno.php");
             exit;
         } else {
-            // Encriptar datos para enviar por URL
+            // Codificar datos para URL
             $id = base64_encode($datos['idAlumno']);
             $ced = base64_encode($datos['cedula']);
             $nom = base64_encode($datos['nombre']);
@@ -210,10 +254,11 @@ if(isset($_GET['M']) && $_GET['M']=="mos"){
             $dep = base64_encode($datos['deporte']);
             $cen = base64_encode($datos['centroIniciacionDeportivo']);
             $rep = base64_encode($datos['idRepresentante']);
-            $usu = base64_encode($datos['idUsuario']);
             $status = base64_encode($datos['estatus']);
+            $estudia = base64_encode($datos['dondeEstudia'] ? 'Si' : 'No');
+            $practicaDeporte = base64_encode($datos['deporte'] ? 'Si' : 'No');
             
-            header("Location: ../vista/alumnos/edit_alumno.php?id=$id&a=$ced&b=$nom&c=$ape&d=$sex&e=$fna&h=$tel&i=$loc&j=$ema&k=$club&l=$dir&m=$est&n=$gra&o=$sec&p=$dep&q=$cen&r=$rep&s=$usu&t=$status");
+            header("Location: ../vista/alumnos/edit_alumno.php?id=$id&ced=$ced&nom=$nom&ape=$ape&sex=$sex&fna=$fna&tel=$tel&loc=$loc&ema=$ema&club=$club&dir=$dir&est=$est&gra=$gra&sec=$sec&dep=$dep&cen=$cen&rep=$rep&status=$status&estudia=$estudia&practicaDeporte=$practicaDeporte");
             exit;
         }
     } catch (Exception $e) {
@@ -223,11 +268,11 @@ if(isset($_GET['M']) && $_GET['M']=="mos"){
     }
 }
 
-############################################################################
-### ACTUALIZAR #############################################################
-############################################################################
-if(isset($_POST['modificar']) && $_POST['modificar']=="modificar"){
+// ==================== ACTUALIZAR ====================
+if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
     try {
+        $errores = [];
+        
         // Sanitizar datos
         $idAlumno = sanitizar($_POST['idAlumno']);
         $cedula = sanitizar($_POST['cedula']);
@@ -235,106 +280,119 @@ if(isset($_POST['modificar']) && $_POST['modificar']=="modificar"){
         $apellido = sanitizar($_POST['apellido']);
         $sexo = sanitizar($_POST['sexo']);
         $fechaNacimiento = sanitizar($_POST['fechaNacimiento']);
-        $telefono = sanitizar($_POST['telefono']);
+        $telefono = !empty($_POST['telefono']) ? sanitizar($_POST['telefono']) : null;
         $localidadMunicipio = sanitizar($_POST['localidadMunicipio']);
-        $correo = sanitizar($_POST['correo']);
-        $club = sanitizar($_POST['club']);
+        $correo = !empty($_POST['correo']) ? sanitizar($_POST['correo']) : null;
+        $club = !empty($_POST['club']) ? sanitizar($_POST['club']) : null;
         $direccion = sanitizar($_POST['direccion']);
-        $dondeEstudia = sanitizar($_POST['dondeEstudia']);
-        $grado = sanitizar($_POST['grado']);
-        $seccion = sanitizar($_POST['seccion']);
-        $deporte = sanitizar($_POST['deporte']);
-        $centroIniciacionDeportivo = sanitizar($_POST['centroIniciacionDeportivo']);
-        $idRepresentante = !empty($_POST['idRepresentante']) ? sanitizar($_POST['idRepresentante']) : null;
-        $idUsuario = !empty($_POST['idUsuario']) ? sanitizar($_POST['idUsuario']) : null;
         $estatus = sanitizar($_POST['estatus']);
-
-        // Validar campos requeridos
-        if(empty($idAlumno) || empty($cedula) || empty($nombre) || empty($apellido) || empty($sexo) || empty($fechaNacimiento) || empty($estatus)) {
-            throw new Exception("Todos los campos marcados con * son obligatorios.");
+        
+        // Campos condicionales - Estudia
+        $estudia = sanitizar($_POST['estudia']);
+        $dondeEstudia = null;
+        $grado = null;
+        $seccion = null;
+        if($estudia == 'Si') {
+            $dondeEstudia = !empty($_POST['dondeEstudia']) ? sanitizar($_POST['dondeEstudia']) : null;
+            $grado = !empty($_POST['grado']) ? sanitizar($_POST['grado']) : null;
+            $seccion = !empty($_POST['seccion']) ? sanitizar($_POST['seccion']) : null;
         }
+        
+        // Campos condicionales - Deporte
+        $practicaDeporte = sanitizar($_POST['practicaDeporte']);
+        $deporte = null;
+        $centroIniciacionDeportivo = null;
+        if($practicaDeporte == 'Si') {
+            $deporte = !empty($_POST['deporte']) ? sanitizar($_POST['deporte']) : null;
+            $centroIniciacionDeportivo = !empty($_POST['centroIniciacionDeportivo']) ? sanitizar($_POST['centroIniciacionDeportivo']) : null;
+        }
+        
+        $idRepresentante = !empty($_POST['idRepresentante']) ? sanitizar($_POST['idRepresentante']) : null;
 
-        // Validar formato de fecha
-        if(!validarFecha($fechaNacimiento)) {
-            throw new Exception("Formato de fecha inválido. Use YYYY-MM-DD.");
+        // Validaciones
+        if(empty($idAlumno)) $errores[] = "ID de alumno no válido";
+        
+        if(empty($cedula)) $errores[] = "La cédula es requerida";
+        elseif(!preg_match('/^\d{7,10}$/', $cedula)) $errores[] = "La cédula debe tener entre 7 y 10 dígitos";
+        
+        if(empty($nombre)) $errores[] = "El nombre es requerido";
+        elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{2,50}$/', $nombre)) $errores[] = "El nombre solo puede contener letras";
+        
+        if(empty($apellido)) $errores[] = "El apellido es requerido";
+        elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{2,50}$/', $apellido)) $errores[] = "El apellido solo puede contener letras";
+        
+        if(empty($sexo)) $errores[] = "El sexo es requerido";
+        elseif(!in_array($sexo, ['M', 'F'])) $errores[] = "Sexo no válido";
+        
+        if(empty($fechaNacimiento)) $errores[] = "La fecha de nacimiento es requerida";
+        elseif(!validarFecha($fechaNacimiento)) $errores[] = "Formato de fecha inválido";
+        
+        if(!empty($telefono) && !preg_match('/^\d{4}-\d{7}$/', $telefono)) $errores[] = "El teléfono debe tener el formato: 0412-1234567";
+        
+        if(!empty($correo) && !filter_var($correo, FILTER_VALIDATE_EMAIL)) $errores[] = "El correo electrónico no es válido";
+        
+        if(empty($localidadMunicipio)) $errores[] = "La localidad es requerida";
+        
+        if(empty($direccion)) $errores[] = "La dirección es requerida";
+        
+        if(empty($estatus)) $errores[] = "El estatus es requerido";
+        elseif(!in_array($estatus, ['activo', 'inactivo', 'suspendido'])) $errores[] = "Estatus no válido";
+        
+        // Validar representante para menores de edad
+        $edad = date_diff(date_create($fechaNacimiento), date_create('today'))->y;
+        if ($edad < 18 && empty($idRepresentante)) {
+            $errores[] = "Los alumnos menores de 18 años deben tener un representante asignado.";
+        }
+        
+        // Verificar cédula duplicada (excluyendo el actual)
+        if($alumno->verificarCedulaExistente($cedula, $idAlumno)) {
+            $errores[] = "Ya existe otro alumno registrado con esta cédula.";
+        }
+        
+        if(!empty($errores)) {
+            $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error de Validación', 'text' => implode('<br>', $errores)];
+            header("Location: ../vista/alumnos/edit_alumno.php?id=" . base64_encode($idAlumno));
+            exit;
         }
 
         $datos = $alumno->ActualizarAlumno(
             $idAlumno, $cedula, $nombre, $apellido, $sexo, $fechaNacimiento,
             $telefono, $localidadMunicipio, $correo, $club, $direccion,
             $dondeEstudia, $grado, $seccion, $deporte, $centroIniciacionDeportivo,
-            $idRepresentante, $idUsuario, $estatus
+            $idRepresentante, $estatus
         );
         
-        if($datos){
-            $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Datos del alumno actualizados con éxito'];
+        if($datos === true){
+            $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Alumno actualizado con éxito.'];
             header("Location: ../vista/alumnos/alumno.php");
             exit;
+        } elseif($datos === 'cedula_exists') {
+            $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'La cédula ya está registrada en otro alumno.'];
+            header("Location: ../vista/alumnos/edit_alumno.php?id=" . base64_encode($idAlumno));
+            exit;
         } else {
-            throw new Exception("No se pudo actualizar el alumno.");
+            $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo actualizar el alumno.'];
+            header("Location: ../vista/alumnos/edit_alumno.php?id=" . base64_encode($idAlumno));
+            exit;
         }
     } catch (Exception $e) {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $e->getMessage()];
-        header("Location: ../vista/alumnos/edit_alumno.php?id=" . base64_encode($idAlumno) . 
-               "&a=" . base64_encode($cedula) . 
-               "&b=" . base64_encode($nombre) . 
-               "&c=" . base64_encode($apellido) . 
-               "&d=" . base64_encode($sexo) . 
-               "&e=" . base64_encode($fechaNacimiento) . 
-               "&h=" . base64_encode($telefono) . 
-               "&i=" . base64_encode($localidadMunicipio) . 
-               "&j=" . base64_encode($correo) . 
-               "&k=" . base64_encode($club) . 
-               "&l=" . base64_encode($direccion) . 
-               "&m=" . base64_encode($dondeEstudia) . 
-               "&n=" . base64_encode($grado) . 
-               "&o=" . base64_encode($seccion) . 
-               "&p=" . base64_encode($deporte) . 
-               "&q=" . base64_encode($centroIniciacionDeportivo) . 
-               "&r=" . base64_encode($idRepresentante) . 
-               "&s=" . base64_encode($idUsuario) . 
-               "&t=" . base64_encode($estatus));
-        exit;
-    }
-}
-
-############################################################################
-### ACTUALIZAR ESTATUS #####################################################
-############################################################################
-if(isset($_POST['actualizar_estatus']) && $_POST['actualizar_estatus']=="actualizar"){
-    try {
-        $idAlumno = sanitizar($_POST['idAlumno']);
-        $estatus = sanitizar($_POST['estatus']);
-        
-        if(empty($idAlumno) || empty($estatus)) {
-            throw new Exception("Datos incompletos para actualizar estatus.");
-        }
-        
-        $datos = $alumno->ActualizarEstatusAlumno($idAlumno, $estatus);
-        
-        if($datos){
-            $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Estatus actualizado con éxito'];
-        } else {
-            $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo actualizar el estatus'];
-        }
-        
-        header("Location: ../vista/alumnos/alumno.php");
-        exit;
-    } catch (Exception $e) {
-        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => $e->getMessage()];
+        error_log("Error al actualizar alumno: " . $e->getMessage());
+        $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Ocurrió un error al actualizar el alumno.'];
         header("Location: ../vista/alumnos/alumno.php");
         exit;
     }
 }
 
-############################################################################
-### ELIMINAR ###############################################################
-############################################################################
+// ==================== ELIMINAR ====================
 if(isset($_GET['E']) && $_GET['E']=="eli"){
     try {
+        if(!isset($_GET['I'])) {
+            throw new Exception("ID no proporcionado.");
+        }
+        
         $ci = base64_decode($_GET['I']);
         
-        if(!preg_match('/^[0-9]{6,10}$/', $ci)) {
+        if(!preg_match('/^\d{7,10}$/', $ci)) {
             throw new Exception("Cédula no válida.");
         }
         
@@ -347,8 +405,10 @@ if(isset($_GET['E']) && $_GET['E']=="eli"){
         
         $resultado = $alumno->EliminarAlumno($datos_alumno['idAlumno']);
         
-        if($resultado){
+        if($resultado === true){
             $_SESSION['flash'] = ['icon' => 'success', 'title' => 'Éxito', 'text' => 'Alumno eliminado con éxito.'];
+        } elseif($resultado === 'in_use') {
+            $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se puede eliminar el alumno porque tiene registros asociados (clases, torneos, etc.).'];
         } else {
             $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'No se pudo eliminar el alumno.'];
         }
@@ -362,148 +422,16 @@ if(isset($_GET['E']) && $_GET['E']=="eli"){
     }
 }
 
-############################################################################
-### OBTENER CATEGORIAS #####################################################
-############################################################################
-if(isset($_GET['categorias']) && $_GET['categorias']=="listar"){
-    try {
-        $categorias = $alumno->ObtenerCategorias();
-        
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'data' => $categorias
-        ]);
-        exit;
-    } catch (Exception $e) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => $e->getMessage()
-        ]);
-        exit;
-    }
-}
-
-############################################################################
-### BUSCAR POR CÉDULA ######################################################
-############################################################################
-if(isset($_GET['buscar_cedula'])){
-    try {
-        $cedula = sanitizar($_GET['buscar_cedula']);
-        
-        if(!preg_match('/^[0-9]{6,10}$/', $cedula)) {
-            throw new Exception("Cédula no válida.");
-        }
-        
-        $datos = $alumno->ConsultarAlumno($cedula);
-        
-        if($datos !== false && !empty($datos)){
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'idAlumno' => $datos['idAlumno'],
-                'cedula' => $datos['cedula'],
-                'nombre' => $datos['nombre'],
-                'apellido' => $datos['apellido'],
-                'sexo' => $datos['sexo'],
-                'fechaNacimiento' => $datos['fechaNacimiento'],
-                'edad' => $datos['edad'],
-                'categoria' => $datos['categoria'],
-                'telefono' => $datos['telefono'],
-                'localidadMunicipio' => $datos['localidadMunicipio'],
-                'correo' => $datos['correo'],
-                'club' => $datos['club'],
-                'direccion' => $datos['direccion'],
-                'dondeEstudia' => $datos['dondeEstudia'],
-                'grado' => $datos['grado'],
-                'seccion' => $datos['seccion'],
-                'deporte' => $datos['deporte'],
-                'centroIniciacionDeportivo' => $datos['centroIniciacionDeportivo'],
-                'idRepresentante' => $datos['idRepresentante'],
-                'nombre_representante' => $datos['nombre_representante'] ?? '',
-                'apellido_representante' => $datos['apellido_representante'] ?? '',
-                'idUsuario' => $datos['idUsuario'],
-                'estatus' => $datos['estatus']
-            ]);
-            exit;
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => false,
-                'message' => 'Alumno no encontrado'
-            ]);
-            exit;
-        }
-    } catch (Exception $e) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => $e->getMessage()
-        ]);
-        exit;
-    }
-}
-
-############################################################################
-### BUSCAR POR ID ##########################################################
-############################################################################
-if(isset($_GET['buscar_id'])){
-    try {
-        $idAlumno = sanitizar($_GET['buscar_id']);
-        
-        if(empty($idAlumno) || !is_numeric($idAlumno)) {
-            throw new Exception("ID no válido.");
-        }
-        
-        $datos = $alumno->ConsultarAlumnoPorId($idAlumno);
-        
-        if($datos !== false && !empty($datos)){
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'idAlumno' => $datos['idAlumno'],
-                'cedula' => $datos['cedula'],
-                'nombre' => $datos['nombre'],
-                'apellido' => $datos['apellido'],
-                'sexo' => $datos['sexo'],
-                'fechaNacimiento' => $datos['fechaNacimiento'],
-                'edad' => $datos['edad'],
-                'categoria' => $datos['categoria'],
-                'telefono' => $datos['telefono'],
-                'localidadMunicipio' => $datos['localidadMunicipio'],
-                'correo' => $datos['correo'],
-                'club' => $datos['club'],
-                'direccion' => $datos['direccion'],
-                'dondeEstudia' => $datos['dondeEstudia'],
-                'grado' => $datos['grado'],
-                'seccion' => $datos['seccion'],
-                'deporte' => $datos['deporte'],
-                'centroIniciacionDeportivo' => $datos['centroIniciacionDeportivo'],
-                'idRepresentante' => $datos['idRepresentante'],
-                'nombre_representante' => $datos['nombre_representante'] ?? '',
-                'apellido_representante' => $datos['apellido_representante'] ?? '',
-                'idUsuario' => $datos['idUsuario'],
-                'nombreUsuario' => $datos['nombreUsuario'] ?? '',
-                'estatus' => $datos['estatus']
-            ]);
-            exit;
-        } else {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => false,
-                'message' => 'Alumno no encontrado'
-            ]);
-            exit;
-        }
-    } catch (Exception $e) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => $e->getMessage()
-        ]);
-        exit;
-    }
+// ==================== VERIFICAR CÉDULA (AJAX) ====================
+if(isset($_GET['verificar_cedula']) && $_GET['verificar_cedula'] == 'true'){
+    $cedula = sanitizar($_GET['cedula']);
+    $excluir = isset($_GET['excluir']) ? sanitizar($_GET['excluir']) : null;
+    
+    $existe = $alumno->verificarCedulaExistente($cedula, $excluir);
+    
+    header('Content-Type: application/json');
+    echo json_encode(['existe' => $existe]);
+    exit;
 }
 
 // Si no se recibe ninguna acción válida

@@ -1,11 +1,28 @@
 <?php
+session_start();
 // Verificar sesión antes de mostrar el dashboard
 include_once("../../controlador/verificar_sesion.php");
+include_once("../../modelo/conexion.php");
 ?>
+<?php
+    // Obtener todos los alumnos
+    try {
+        $sql = $conex->prepare("SELECT a.*, r.nombre as nombre_representante, r.apellido as apellido_representante
+                                FROM ALUMNO a 
+                                LEFT JOIN REPRESENTANTE r ON a.idRepresentante = r.idRepresentante 
+                                ORDER BY a.apellido, a.nombre");
+        $sql->execute();
+        $alumnos = $sql->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        $alumnos = [];
+        error_log("Error al cargar alumnos: " . $e->getMessage());
+    }
+    ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <?php include '../assets/inc/head.php'; ?>
+
 </head>
 
 <body>
@@ -17,40 +34,20 @@ include_once("../../controlador/verificar_sesion.php");
     <!-- HEADER -->
     <?php include '../assets/inc/header.php'; ?>
 
-    <?php
-    session_start();
     
- 
-    
-    include '../../modelo/conexion.php';
-    
-    // Obtener todos los alumnos
-    try {
-        $sql = $conex->query("SELECT * FROM ALUMNO ORDER BY apellido, nombre");
-        $alumnos = $sql->fetchAll(PDO::FETCH_ASSOC);
-    } catch(PDOException $e) {
-        $alumnos = [];
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error al cargar los alumnos: " . addslashes($e->getMessage()) . "'
-            });
-        </script>";
-    }
-    ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
         <div class="catalog-header">
             <h1 class="page-title"><i class="fas fa-chess-queen me-2"></i> ALUMNOS</h1>
-            <button class="btn btn-custom"><a href="./insert_alumno.php"><i class="fas fa-plus-circle me-2"></i>Nuevo Alumno</a></button>
+            <a href="./insert_alumno.php" class="btn btn-custom"><i class="fas fa-plus-circle me-2"></i>Nuevo Alumno</a>
         </div>
 
         <!-- FILTROS -->
-        <div class="filtros mb-3">
-            <div class="row">
+        <div class="filtros">
+            <div class="row align-items-end">
                 <div class="col-md-3">
+                    <label class="form-label">Filtrar por Estatus</label>
                     <select id="filtroEstatus" class="form-select">
                         <option value="">Todos los estatus</option>
                         <option value="activo">Activos</option>
@@ -59,21 +56,34 @@ include_once("../../controlador/verificar_sesion.php");
                     </select>
                 </div>
                 <div class="col-md-3">
+                    <label class="form-label">Filtrar por Categoría</label>
                     <select id="filtroCategoria" class="form-select">
                         <option value="">Todas las categorías</option>
                         <option value="Sub-6">Sub-6</option>
+                        <option value="Sub-7">Sub-7</option>
                         <option value="Sub-8">Sub-8</option>
+                        <option value="Sub-9">Sub-9</option>
                         <option value="Sub-10">Sub-10</option>
+                        <option value="Sub-11">Sub-11</option>
                         <option value="Sub-12">Sub-12</option>
+                        <option value="Sub-13">Sub-13</option>
                         <option value="Sub-14">Sub-14</option>
+                        <option value="Sub-15">Sub-15</option>
                         <option value="Sub-16">Sub-16</option>
+                        <option value="Sub-17">Sub-17</option>
                         <option value="Sub-18">Sub-18</option>
-                        <option value="Adultos">Adultos</option>
+                        <option value="Sub-19">Sub-19</option>
+                        <option value="Sub-20">Sub-20</option>
+                        <option value="Abierta">Abierta</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <button id="btnFiltrar" class="btn btn-primary">Filtrar</button>
-                    <button id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
+                    <label class="form-label">Buscar</label>
+                    <input type="text" id="buscarInput" class="form-control" placeholder="Nombre o cédula...">
+                </div>
+                <div class="col-md-3">
+                    <button id="btnFiltrar" class="btn btn-primary"><i class="fas fa-search me-1"></i>Filtrar</button>
+                    <button id="btnLimpiar" class="btn btn-secondary"><i class="fas fa-eraser me-1"></i>Limpiar</button>
                 </div>
             </div>
         </div>
@@ -100,7 +110,10 @@ include_once("../../controlador/verificar_sesion.php");
                         </tr>
                     <?php else: ?>
                         <?php foreach ($alumnos as $alumno): ?>
-                            <tr data-estatus="<?php echo htmlspecialchars($alumno['estatus']); ?>" data-categoria="<?php echo htmlspecialchars($alumno['categoria']); ?>">
+                            <tr data-estatus="<?php echo htmlspecialchars($alumno['estatus']); ?>" 
+                                data-categoria="<?php echo htmlspecialchars($alumno['categoria']); ?>"
+                                data-nombre="<?php echo strtolower(htmlspecialchars($alumno['nombre'] . ' ' . $alumno['apellido'])); ?>"
+                                data-cedula="<?php echo htmlspecialchars($alumno['cedula']); ?>">
                                 <td><?php echo htmlspecialchars($alumno['cedula']); ?></td>
                                 <td><?php echo htmlspecialchars($alumno['nombre'] . ' ' . $alumno['apellido']); ?></td>
                                 <td><?php echo date('d/m/Y', strtotime($alumno['fechaNacimiento'])); ?></td>
@@ -108,9 +121,7 @@ include_once("../../controlador/verificar_sesion.php");
                                 <td><?php echo htmlspecialchars($alumno['categoria']); ?></td>
                                 <td><?php echo $alumno['sexo'] == 'M' ? 'Masculino' : 'Femenino'; ?></td>
                                 <td>
-                                    <span class="badge bg-<?php 
-                                        echo $alumno['estatus'] == 'activo' ? 'success' : ($alumno['estatus'] == 'inactivo' ? 'secondary' : 'warning'); 
-                                    ?>">
+                                    <span class="badge bg-<?php echo $alumno['estatus'] == 'activo' ? 'success' : ($alumno['estatus'] == 'inactivo' ? 'secondary' : 'warning'); ?>">
                                         <?php echo ucfirst($alumno['estatus']); ?>
                                     </span>
                                 </td>
@@ -133,77 +144,15 @@ include_once("../../controlador/verificar_sesion.php");
         </div>
     </div>
 </div>
+
 <?php include '../assets/inc/flash.php'; ?>
+
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
+<?php include '../assets/inc/eliminar_alumno.php'; ?>
 
-<script>
-$(document).ready(function() {
-    // Función para filtrar la tabla
-    function filtrarTabla() {
-        var estatus = $('#filtroEstatus').val();
-        var categoria = $('#filtroCategoria').val();
-        
-        $('#alumnoTable tbody tr').each(function() {
-            var mostrar = true;
-            
-            if (estatus && $(this).data('estatus') !== estatus) {
-                mostrar = false;
-            }
-            
-            if (categoria && $(this).data('categoria') !== categoria) {
-                mostrar = false;
-            }
-            
-            if (mostrar) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    }
-    
-    // Botón filtrar
-    $('#btnFiltrar').click(function() {
-        filtrarTabla();
-    });
-    
-    // Botón limpiar filtros
-    $('#btnLimpiar').click(function() {
-        $('#filtroEstatus').val('');
-        $('#filtroCategoria').val('');
-        $('#alumnoTable tbody tr').show();
-    });
-    
-    // Función para confirmar eliminación
-    function confirmarEliminacion(nombreAlumno, cedula) {
-        Swal.fire({
-            title: '¿Eliminar alumno?',
-            text: `¿Estás seguro de que deseas eliminar a ${nombreAlumno} con cédula ${cedula}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `../controlador/ctl_alumno.php?E=eli&I=${btoa(cedula)}`;
-            }
-        });
-    }
-    
-    // Evento para los botones de eliminar
-    $('.btn-delete').click(function() {
-        var cedula = $(this).data('cedula');
-        var nombre = $(this).data('nombre');
-        confirmarEliminacion(nombre, cedula);
-    });
-});
-</script>
 
 </body>
 </html>

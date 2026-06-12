@@ -1,12 +1,8 @@
 <?php
 session_start();
+include("../../controlador/verificar_sesion.php");
 include("../../modelo/conexion.php");
 include("../../modelo/clase_entrenador.php");
-
-
-// Verificar sesión antes de mostrar el dashboard
-include_once("../../controlador/verificar_sesion.php");
-
 
 $ent = new Entrenador();
 $entrenadores = $ent->ListarEntrenadores();
@@ -31,7 +27,7 @@ $entrenadores = $ent->ListarEntrenadores();
             <a href="./insert_entrenador.php" class="btn btn-custom"><i class="fas fa-plus-circle me-2"></i>Nuevo Entrenador</a>
         </div>
 
-        
+     
         <div class="table-responsive">
             <table class="table alumno-table" id="entrenadorTable">
                 <thead>
@@ -39,6 +35,7 @@ $entrenadores = $ent->ListarEntrenadores();
                         <th>Cédula</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
+                        <th>Teléfono</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -49,6 +46,7 @@ $entrenadores = $ent->ListarEntrenadores();
                                 <td><?php echo htmlspecialchars($row['cedula']); ?></td>
                                 <td><?php echo htmlspecialchars($row['nombre']); ?></td>
                                 <td><?php echo htmlspecialchars($row['apellido']); ?></td>
+                                <td><?php echo htmlspecialchars($row['telefono'] ?: 'No registrado'); ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-secondary" href="../../controlador/ctl_entrenador.php?C=con&I=<?php echo base64_encode($row['cedula']); ?>">
                                         <i class="fas fa-eye"></i>
@@ -59,12 +57,12 @@ $entrenadores = $ent->ListarEntrenadores();
                                     <button class="btn btn-sm btn-danger btn-delete" data-cedula="<?php echo $row['cedula']; ?>" data-nombre="<?php echo htmlspecialchars($row['nombre'] . ' ' . $row['apellido']); ?>">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                </td>
+                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="4" class="text-center">No hay entrenadores registrados</td>
+                            <td colspan="6" class="text-center">No hay entrenadores registrados</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -72,42 +70,12 @@ $entrenadores = $ent->ListarEntrenadores();
         </div>
     </div>
 </div>
-<?php include '../assets/inc/flash.php'; ?>
+
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebar.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-   
+<?php include '../assets/inc/eliminar_entrenador.php'; ?>
 
-    // Eliminación
-    const botonesEliminar = document.querySelectorAll('.btn-delete');
-    
-    botonesEliminar.forEach((boton) => {
-        boton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const nombre = this.getAttribute('data-nombre');
-            const cedula = this.getAttribute('data-cedula');
-            
-            Swal.fire({
-                title: '¿Eliminar entrenador?',
-                text: `¿Estás seguro de que deseas eliminar al entrenador "${nombre}"?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `../../controlador/ctl_entrenador.php?E=eli&I=${btoa(cedula)}`;
-                }
-            });
-        });
-    });
-});
-</script>
 </body>
 </html>

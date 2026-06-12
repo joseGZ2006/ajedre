@@ -2,12 +2,12 @@
 // Clase Entrenador
 class Entrenador {
     // DECLARACION DE LAS PROPIEDADES
-    public $id_entrenador, $id_usuario, $id_especialidad, $cedula, $nombre, $apellido, $telefono;
+    public $id_entrenador, $id_usuario, $idEspecialidad, $cedula, $nombre, $apellido, $telefono;
 
     // Setters
     public function setId_entrenador($id_entrenador){ $this->id_entrenador = $id_entrenador; }
     public function setId_usuario($id_usuario){ $this->id_usuario = $id_usuario; }
-    public function setId_especialidad($id_especialidad){ $this->id_especialidad = $id_especialidad; }
+    public function setId_especialidad($idEspecialidad){ $this->idEspecialidad = $idEspecialidad; }
     public function setCedula($cedula){ $this->cedula = $cedula; }
     public function setNombre($nombre){ $this->nombre = $nombre; }
     public function setApellido($apellido){ $this->apellido = $apellido; }
@@ -16,7 +16,7 @@ class Entrenador {
     // Getters
     public function getId_entrenador(){ return $this->id_entrenador; }
     public function getId_usuario(){ return $this->id_usuario; }
-    public function getId_especialidad(){ return $this->id_especialidad; }
+    public function getId_especialidad(){ return $this->idEspecialidad; }
     public function getCedula(){ return $this->cedula; }
     public function getNombre(){ return $this->nombre; }
     public function getApellido(){ return $this->apellido; }
@@ -45,13 +45,13 @@ class Entrenador {
     }
 
     ############################################################################
-    ### REGISTRAR (con ID de usuario existente) ################################
+    ### REGISTRAR ##############################################################
     ############################################################################
-    public function RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $id_especialidad = null){
+    public function RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario = null, $idEspecialidad){
         include("conexion.php");
 
         // Validaciones
-        if(empty($cedula) || empty($nombre) || empty($apellido) || empty($id_usuario)) {
+        if(empty($cedula) || empty($nombre) || empty($apellido)) {
             return false;
         }
 
@@ -69,8 +69,8 @@ class Entrenador {
             return false;
         }
 
-        // Validar teléfono (formato: 4 dígitos + guión + 7 dígitos)
-        if(empty($telefono) || !preg_match('/^\d{4}-\d{7}$/', $telefono)) {
+        // Validar teléfono si no está vacío (formato: 4 dígitos + guión + 7 dígitos = 12 caracteres)
+        if(!empty($telefono) && !preg_match('/^\d{4}-\d{7}$/', $telefono)) {
             return false;
         }
 
@@ -80,20 +80,12 @@ class Entrenador {
         $num = $sql->rowCount();
 
         if ($num == 0){
-            // Verificar que el usuario no esté ya asociado a otro entrenador
-            $sql_check = $conex->prepare("SELECT * FROM ENTRENADOR WHERE idUsuario = ?");
-            $sql_check->execute([$id_usuario]);
+            // Insertar nuevo entrenador (idUsuario siempre null)
+            $sql = $conex->prepare("INSERT INTO ENTRENADOR (cedula, nombre, apellido, telefono, idUsuario, idEspecialidad) VALUES (?, ?, ?, ?, ?, ?)");
+            $insertar = $sql->execute([$cedula, $nombre, $apellido, $telefono, null, $idEspecialidad]);
             
-            if($sql_check->rowCount() == 0){
-                // Insertar entrenador con el ID de usuario proporcionado
-                $sql_entrenador = $conex->prepare("INSERT INTO ENTRENADOR (cedula, nombre, apellido, telefono, idUsuario, idEspecialidad) VALUES (?, ?, ?, ?, ?, ?)");
-                $insertar_entrenador = $sql_entrenador->execute([$cedula, $nombre, $apellido, $telefono, $id_usuario, $id_especialidad]);
-                
-                if($insertar_entrenador) {
-                    return true;
-                }
-            } else {
-                return false; // Usuario ya está asociado a otro entrenador
+            if($insertar) {
+                return true;
             }
         }
         return false;
@@ -105,9 +97,9 @@ class Entrenador {
     public function ListarEntrenador(){
         include("conexion.php");
         
-        $sql = $conex->prepare("SELECT e.*, u.nombreUsuario, es.nombre as especialidad_nombre 
+        // Sin JOIN con USUARIO, solo datos del entrenador y especialidad
+        $sql = $conex->prepare("SELECT e.*, es.nombre as especialidad_nombre 
                                 FROM ENTRENADOR e 
-                                LEFT JOIN USUARIO u ON e.idUsuario = u.idUsuario 
                                 LEFT JOIN ESPECIALIDAD es ON e.idEspecialidad = es.idEspecialidad
                                 ORDER BY e.nombre, e.apellido");
         $sql->execute();
@@ -143,9 +135,9 @@ class Entrenador {
     public function ConsultarEntrenador($cedula){
         include("conexion.php");
         
-        $sql = $conex->prepare("SELECT e.*, u.nombreUsuario, u.rol, es.nombre as especialidad_nombre 
+        // Sin JOIN con USUARIO
+        $sql = $conex->prepare("SELECT e.*, es.nombre as especialidad_nombre 
                                 FROM ENTRENADOR e 
-                                LEFT JOIN USUARIO u ON e.idUsuario = u.idUsuario 
                                 LEFT JOIN ESPECIALIDAD es ON e.idEspecialidad = es.idEspecialidad
                                 WHERE e.cedula = ?");
         $sql->execute([$cedula]);
@@ -161,8 +153,6 @@ class Entrenador {
                 $data['telefono'],
                 $data['idUsuario'],
                 $data['idEspecialidad'],
-                $data['nombreUsuario'],
-                $data['rol'],
                 $data['especialidad_nombre']
             ];
             return $registro;
@@ -177,9 +167,8 @@ class Entrenador {
     public function ConsultarEntrenadorPorId($id_entrenador){
         include("conexion.php");
         
-        $sql = $conex->prepare("SELECT e.*, u.nombreUsuario, u.rol, es.nombre as especialidad_nombre 
+        $sql = $conex->prepare("SELECT e.*, es.nombre as especialidad_nombre 
                                 FROM ENTRENADOR e 
-                                LEFT JOIN USUARIO u ON e.idUsuario = u.idUsuario 
                                 LEFT JOIN ESPECIALIDAD es ON e.idEspecialidad = es.idEspecialidad
                                 WHERE e.idEntrenador = ?");
         $sql->execute([$id_entrenador]);
@@ -198,11 +187,7 @@ class Entrenador {
     public function MostrarEntrenador($cedula){
         include("conexion.php");
         
-        $sql = $conex->prepare("SELECT e.*, u.nombreUsuario, u.rol, es.nombre as especialidad_nombre 
-                                FROM ENTRENADOR e 
-                                LEFT JOIN USUARIO u ON e.idUsuario = u.idUsuario 
-                                LEFT JOIN ESPECIALIDAD es ON e.idEspecialidad = es.idEspecialidad
-                                WHERE e.cedula = ?");
+        $sql = $conex->prepare("SELECT * FROM ENTRENADOR WHERE cedula = ?");
         $sql->execute([$cedula]);
         $num_reg = $sql->rowCount();
         
@@ -215,10 +200,7 @@ class Entrenador {
                 $data['apellido'],
                 $data['telefono'],
                 $data['idUsuario'],
-                $data['idEspecialidad'],
-                $data['nombreUsuario'],
-                $data['rol'],
-                $data['especialidad_nombre']
+                $data['idEspecialidad']
             ];
             return $registro;
         } else {
@@ -229,7 +211,7 @@ class Entrenador {
     ############################################################################
     ### ACTUALIZAR #############################################################
     ############################################################################
-    public function ActualizarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $id_especialidad = null){
+    public function ActualizarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario = null, $idEspecialidad){
         include("conexion.php"); 
 
         // Validaciones
@@ -246,8 +228,8 @@ class Entrenador {
             return false;
         }
 
-        // Validar teléfono
-        if(empty($telefono) || !preg_match('/^\d{4}-\d{7}$/', $telefono)) {
+        // Validar teléfono si no está vacío (formato: 4 dígitos + guión + 7 dígitos = 12 caracteres)
+        if(!empty($telefono) && !preg_match('/^\d{4}-\d{7}$/', $telefono)) {
             return false;
         }
 
@@ -257,9 +239,9 @@ class Entrenador {
         $num = $sql->rowCount();
 
         if ($num > 0){
-            // Actualizar entrenador
+            // Actualizar entrenador (
             $sql = $conex->prepare("UPDATE ENTRENADOR SET nombre = ?, apellido = ?, telefono = ?, idUsuario = ?, idEspecialidad = ? WHERE cedula = ?");
-            $actualizar = $sql->execute([$nombre, $apellido, $telefono, $id_usuario, $id_especialidad, $cedula]);
+            $actualizar = $sql->execute([$nombre, $apellido, $telefono, null, $idEspecialidad, $cedula]);
             
             if($actualizar) {
                 return true;
@@ -275,7 +257,7 @@ class Entrenador {
         include("conexion.php"); 
 
         // Primero obtener el ID del entrenador
-        $sql = $conex->prepare("SELECT idEntrenador, nombre, apellido, idUsuario FROM ENTRENADOR WHERE cedula = ?");
+        $sql = $conex->prepare("SELECT idEntrenador, nombre, apellido FROM ENTRENADOR WHERE cedula = ?");
         $sql->execute([$cedula]);
         $entrenador = $sql->fetch(PDO::FETCH_ASSOC);
         
@@ -290,7 +272,7 @@ class Entrenador {
             throw new Exception("No se puede eliminar el entrenador porque está asociado a una o más asignaciones de clase o registros de asistencia.");
         }
 
-        // Eliminar el entrenador (NO eliminamos el usuario, solo desasociamos)
+        // Eliminar el entrenador
         $sql = $conex->prepare("DELETE FROM ENTRENADOR WHERE cedula = ?");
         $eliminar = $sql->execute([$cedula]); 
         

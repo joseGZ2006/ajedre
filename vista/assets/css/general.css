@@ -11,7 +11,10 @@
 .alumno-table thead {
     background: linear-gradient(135deg, #2c3e50, #1a252f);
 }
-
+.disables {
+    background-color: #7f8c8d;    
+    pointer-events: none;
+}
 .alumno-table thead th {
     color: rgb(0, 0, 0);
     font-weight: 600;

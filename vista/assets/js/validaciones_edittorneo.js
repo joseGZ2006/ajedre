@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    $('#formRegistrar').on('submit', function(e) {
+    $('#formEditar').on('submit', function(e) {
         e.preventDefault();
         
         let isValid = true;

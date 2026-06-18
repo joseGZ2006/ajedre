@@ -47,7 +47,7 @@ class Entrenador {
     ############################################################################
     ### REGISTRAR ##############################################################
     ############################################################################
-    public function RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $idEspecialidad){
+    public function RegistrarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario = null, $idEspecialidad){
         include("conexion.php");
 
         // Validaciones
@@ -211,7 +211,7 @@ class Entrenador {
     ############################################################################
     ### ACTUALIZAR #############################################################
     ############################################################################
-    public function ActualizarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario, $idEspecialidad){
+    public function ActualizarEntrenador($cedula, $nombre, $apellido, $telefono, $id_usuario = null, $idEspecialidad){
         include("conexion.php"); 
 
         // Validaciones

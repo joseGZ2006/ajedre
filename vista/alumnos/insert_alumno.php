@@ -40,7 +40,7 @@ include_once("../../modelo/conexion.php");
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Cédula</label>
-                        <input type="text" class="form-control" id="cedula" name="cedula" maxlength="10" placeholder="Ej: 12345678">
+                        <input type="text" class="form-control" id="cedula" name="cedula" maxlength="8" placeholder="Ej: 12345678">
                         <div class="invalid-feedback-real" id="cedulaFeedback"></div>
                     </div>
 

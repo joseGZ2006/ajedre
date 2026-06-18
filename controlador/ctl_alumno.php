@@ -313,7 +313,7 @@ if(isset($_POST['modificar']) && $_POST['modificar'] == "modificar"){
         if(empty($idAlumno)) $errores[] = "ID de alumno no válido";
         
         if(empty($cedula)) $errores[] = "La cédula es requerida";
-        elseif(!preg_match('/^\d{7,10}$/', $cedula)) $errores[] = "La cédula debe tener entre 7 y 10 dígitos";
+        elseif(!preg_match('/^\d{7,8}$/', $cedula)) $errores[] = "La cédula debe tener entre 7 y 8 dígitos";
         
         if(empty($nombre)) $errores[] = "El nombre es requerido";
         elseif(!preg_match('/^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]{2,50}$/', $nombre)) $errores[] = "El nombre solo puede contener letras";

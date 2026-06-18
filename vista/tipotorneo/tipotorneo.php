@@ -1,7 +1,12 @@
 <?php
 session_start();
-// Verificar sesión antes de mostrar el dashboard
+include("../../modelo/conexion.php");
+include("../../modelo/clase_tipotorneo.php");
+// Verificar sesión 
 include_once("../../controlador/verificar_sesion.php");
+
+$tip = new TipoTorneo();
+$tipos = $tip->ListarTipoTorneo();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,45 +45,47 @@ include_once("../../controlador/verificar_sesion.php");
                 <thead>
                     <tr>
                         <th>Tipo de Torneo</th>
+                        <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
 
                 <tbody>
-
-                    <tr>
-                        <td>Blitz</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_tipotorneo.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_tipotorneo.html"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Aperturas de Ajedrez">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Clasico</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_tipotorneo.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_tipotorneo.html"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Estrategia Posicional">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Táctica y Cálculo</td>
-                        <td>
-                            <a class="btn btn-sm btn-secondary" href="./detalle_tipotorneo.html"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-primary" href="./edit_tipotorneo.html"><i class="fas fa-edit"></i></a>
-                            <button class="btn btn-sm btn-danger btn-delete" data-nombre="Táctica y Cálculo">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
-
+                    <?php if($tipos && count($tipos) > 0): ?>
+                        <?php foreach($tipos as $row): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                            <td>
+                                <span class="badge bg-<?php 
+                                    echo $row['tipo'] == 'individual' ? 'primary' : 
+                                         ($row['tipo'] == 'equipo' ? 'success' : 'warning'); 
+                                ?>">
+                                    <?php echo ucfirst(htmlspecialchars($row['tipo'])); ?>
+                                </span>
+                            </td>
+                            <td>
+                               
+                                <!-- Editar -->
+                                <a class="btn btn-sm btn-primary" 
+                                   href="../../controlador/ctl_tipotorneo.php?M=mos&I=<?php echo $row['idTipoTorneo']; ?>">
+                                   <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Eliminar -->
+                                <button class="btn btn-sm btn-danger btn-delete" 
+                                        data-id="<?php echo base64_encode($row['idTipoTorneo']); ?>"
+                                        data-nombre="<?php echo htmlspecialchars($row['nombre']); ?>">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php 
+                        endforeach;
+                    else:
+                    ?>
+                        <tr>
+                            <td colspan="3" class="text-center">No hay tipos de torneo registrados</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
 
             </table>
@@ -86,7 +93,7 @@ include_once("../../controlador/verificar_sesion.php");
 
     </div>
 </div>
-
+<?php include '../assets/inc/flash.php'; ?>
 <!-- JS -->
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -102,9 +109,10 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function () {
 
             const nombre = this.getAttribute('data-nombre');
+            const id = this.getAttribute('data-id');
 
             Swal.fire({
-                title: '¿Eliminar especialidad?',
+                title: '¿Eliminar tipo de torneo?',
                 text: `¿Deseas eliminar: ${nombre}?`,
                 icon: 'warning',
                 showCancelButton: true,
@@ -114,11 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }).then((result) => {
 
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'Especialidad eliminada correctamente'
-                    });
+                    // Redirigir al controlador para eliminar
+                    window.location.href = `../../controlador/ctl_tipotorneo.php?E=eli&I=${id}`;
                 }
 
             });

@@ -320,9 +320,12 @@ if(isset($_POST['aceptar']) && $_POST['aceptar'] == "aceptar"){
         $_SESSION['rol_ses'] = $resultado['rol'];
         $_SESSION['est_ses'] = $resultado['estatus'];
         
-      
+        // Guardar mensaje de bienvenida en una variable de sesión separada
+        $_SESSION['bienvenida'] = "Bienvenido {$resultado['nombreUsuario']}";
         
+        // También mantener el flash para otros mensajes
         $_SESSION['flash'] = ['icon' => 'success', 'title' => 'BIENVENIDO', 'text' => "Bienvenido {$resultado['nombreUsuario']}"];
+        
         header("Location: ../vista/loyaut/dashboard.php");
         exit;
         

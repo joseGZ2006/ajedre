@@ -2,6 +2,28 @@
 session_start();
 // Verificar sesión antes de mostrar el dashboard
 include_once("../../controlador/verificar_sesion.php");
+
+// Obtener datos de la URL
+$id = isset($_GET['id']) ? base64_decode($_GET['id']) : '';
+$nombre = isset($_GET['nom']) ? base64_decode($_GET['nom']) : '';
+$tipo = isset($_GET['tipo']) ? base64_decode($_GET['tipo']) : '';
+
+// Si no hay datos, redirigir
+if(empty($id) || empty($nombre)) {
+    $_SESSION['flash'] = ['icon' => 'error', 'title' => 'Error', 'text' => 'Datos incompletos para mostrar.'];
+    header("Location: ./tipotorneo.php");
+    exit;
+}
+
+// Obtener badge de tipo
+function getTipoBadge($tipo) {
+    $clases = [
+        'individual' => 'bg-primary',
+        'equipo' => 'bg-success',
+        'mixto' => 'bg-warning'
+    ];
+    return isset($clases[$tipo]) ? $clases[$tipo] : 'bg-secondary';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -39,10 +61,10 @@ include_once("../../controlador/verificar_sesion.php");
                 <i class="fas fa-chess-knight"></i>
             </div>
 
-            <h2 id="detalleNombre">Blitz</h2>
+            <h2 id="detalleNombre"><?php echo htmlspecialchars($nombre); ?></h2>
 
             <p class="text-muted">
-                ID: 1
+                ID: <?php echo htmlspecialchars($id); ?>
             </p>
         </div>
 
@@ -58,7 +80,16 @@ include_once("../../controlador/verificar_sesion.php");
                 <div class="info-row">
                     <span class="info-label">Nombre:</span>
                     <span class="info-value" id="detalleTipoTorneo">
-                        Blitz
+                        <?php echo htmlspecialchars($nombre); ?>
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Tipo:</span>
+                    <span class="info-value">
+                        <span class="badge <?php echo getTipoBadge($tipo); ?>">
+                            <?php echo ucfirst(htmlspecialchars($tipo)); ?>
+                        </span>
                     </span>
                 </div>
 

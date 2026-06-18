@@ -22,37 +22,64 @@ function validarFormularioCompleto(ojb) {
 
     // Validar nombre
     if (nombre.value.trim() === '') {
+
         nombre.classList.add('is-invalid');
-        document.getElementById('nombreFeedback').textContent = 'El nombre es obligatorio.';
+        document.getElementById('nombreFeedback').textContent =
+        'El nombre es requerido.';
+        isValid = false;
+
+    } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.value)) {
+
+        nombre.classList.add('is-invalid');
+        document.getElementById('nombreFeedback').textContent =
+        'El nombre solo puede contener letras y espacios.';
         isValid = false;
     } else {
+
         nombre.classList.remove('is-invalid');
         document.getElementById('nombreFeedback').textContent = '';
+
     }
 
     // Validar apellido
     if (apellido.value.trim() === '') {
+
         apellido.classList.add('is-invalid');
-        document.getElementById('apellidoFeedback').textContent = 'El apellido es obligatorio.';
+        document.getElementById('apellidoFeedback').textContent =
+        'El apellido es requerido.';
         isValid = false;
+
+    } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido.value)) {
+
+        apellido.classList.add('is-invalid');
+        document.getElementById('apellidoFeedback').textContent =
+        'El apellido solo puede contener letras y espacios.';
+        isValid = false;
+
     } else {
+
         apellido.classList.remove('is-invalid');
         document.getElementById('apellidoFeedback').textContent = '';
+
     }
 
     // Validar teléfono permite este formato: 0414-1234567 o 0424-1234567 o 0416-1234567 o 0426-1234567 
-    if (!/^[0-9]{4}-[0-9]{7}$/.test(telefono.value)) {
+    if (
+        telefono.value.trim() !== '' &&
+        !/^[0-9]{4}-[0-9]{7}$/.test(telefono.value)
+    ) {
+
         telefono.classList.add('is-invalid');
-        document.getElementById('telefonoFeedback').textContent = 'El teléfono debe tener el formato 0422-1234567.';
+        document.getElementById('telefonoFeedback').textContent =
+        'El teléfono debe tener el formato 0412-1234567.';
         isValid = false;
+
     } else {
+
         telefono.classList.remove('is-invalid');
         document.getElementById('telefonoFeedback').textContent = '';
+
     }
-    
-
-
-    
 
     // Validar especialidad
     if (idEspecialidad.value === '') {

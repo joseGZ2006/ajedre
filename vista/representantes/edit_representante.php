@@ -61,7 +61,7 @@ $datos = $_SESSION['edit_representante'];
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" name="telefono" id="telefono" placeholder="0412-1234567" value="<?php echo htmlspecialchars($datos['telefono']); ?>">
+                            <input type="tel" class="form-control " name="telefono" id="telefono"  placeholder="0412-1234567" value="<?php echo htmlspecialchars($datos['telefono']); ?>">
                             <div class="invalid-feedback-real" id="telefonoFeedback"></div>
                         </div>
                         <div class="col-md-4 mb-3">
@@ -71,7 +71,7 @@ $datos = $_SESSION['edit_representante'];
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label required-star">Parentesco *</label>
-                            <select class="form-select" name="parentesco" id="parentesco">
+                            <select  class="form-select" name="parentesco" id="parentesco">
                                 <option value="">Seleccionar parentesco</option>
                                 <option value="Padre" <?php echo ($datos['parentesco'] == 'Padre') ? 'selected' : ''; ?>>Padre</option>
                                 <option value="Madre" <?php echo ($datos['parentesco'] == 'Madre') ? 'selected' : ''; ?>>Madre</option>

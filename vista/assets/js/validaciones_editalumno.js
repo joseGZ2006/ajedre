@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         cedula: /^\d{7,10}$/,
 
-        letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/,
+        letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}$/,
 
         telefono: /^[0-9]{4}-[0-9]{7}$/,
 
@@ -98,14 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!fechaNacimiento.value) return;
 
-        const año = parseInt(fechaNacimiento.value.split("-")[0]);
+        const fecha = new Date(fechaNacimiento.value);
+        const hoy = new Date();
 
-        if (representanteContainer) {
-            if (año >= 2009) {
-                representanteContainer.style.display = 'block';
-            } else {
-                representanteContainer.style.display = 'none';
-            }
+        let edad = hoy.getFullYear() - fecha.getFullYear();
+
+        const mes = hoy.getMonth() - fecha.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fecha.getDate())) {
+            edad--;
+        }
+        if (edad < 18) {
+            representanteContainer.style.display = 'block';
+        }
+        else {
+            representanteContainer.style.display = 'none';
         }
     }
 
@@ -122,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cedula.addEventListener('input', function() {
 
-        this.value = this.value.replace(/[^0-9]/g, '');
+        this.value = this.value.replace(/[^0-8]/g, '');
 
         if (this.value.length === 0) return clearValidation(this);
 
@@ -138,13 +145,15 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
 
         if (this.value.trim().length === 0) {
-            showError(this, 'El nombre es obligatorio');
-            return;
+            showError(this, 'El nombre es requerido');
         }
-
-        if (!regex.letras.test(this.value)) {
-            showError(this, 'Solo letras y espacios');
-        } else {
+        else if (this.value.trim().length < 2 || this.value.trim().length > 50) {
+            showError(this, 'El nombre debe tener entre 2 y 50 caracteres');
+        }
+        else if (!regex.letras.test(this.value)) {
+            showError(this, 'El nombre solo puede contener letras');
+        }
+        else {
             showValid(this);
         }
     });
@@ -152,15 +161,17 @@ document.addEventListener('DOMContentLoaded', function() {
     apellido.addEventListener('input', function() {
 
         this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
-
+        
         if (this.value.trim().length === 0) {
-            showError(this, 'El apellido es obligatorio');
-            return;
+            showError(this, 'El apellido es requerido');
         }
-
-        if (!regex.letras.test(this.value)) {
-            showError(this, 'Solo letras y espacios');
-        } else {
+        else if (this.value.trim().length < 2 || this.value.trim().length > 50) {
+            showError(this, 'El apellido debe tener entre 2 y 50 caracteres');
+        }
+        else if (!regex.letras.test(this.value)) {
+            showError(this, 'El apellido solo puede contener letras');
+        }
+        else {
             showValid(this);
         }
     });
@@ -169,28 +180,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         this.value = formatTelefono(this.value);
 
-        if (this.value.trim().length === 0) {
-            showError(this, 'El teléfono es obligatorio');
-            return;
+        if (this.value.trim() === '') {
+            clearValidation(this);
         }
-
-        if (!regex.telefono.test(this.value)) {
-            showError(this, 'Formato: 0412-1234567');
-        } else {
+        else if (!regex.telefono.test(this.value)) {
+            showError(this, 'El teléfono debe tener el formato: 0412-1234567');
+        }
+        else {
             showValid(this);
         }
     });
 
     correo.addEventListener('input', function() {
 
-        if (this.value.trim().length === 0) {
-            showError(this, 'El correo es obligatorio');
-            return;
+        if (this.value.trim() === '') {
+            clearValidation(this);
         }
-
-        if (!regex.correo.test(this.value)) {
-            showError(this, 'Correo inválido');
-        } else {
+        else if (!regex.correo.test(this.value)) {
+            showError(this, 'El correo electrónico no es válido');
+        }
+        else {
             showValid(this);
         }
     });
@@ -236,13 +245,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // NOMBRE
-        if (nombre.value.trim() === '' || !regex.letras.test(nombre.value)) {
+        if (nombre.value.trim() === '' || nombre.value.trim().length < 2 || nombre.value.trim().length > 50 || !regex.letras.test(nombre.value)) {
             showError(nombre, 'Nombre obligatorio');
             valido = false;
         }
 
         // APELLIDO
-        if (apellido.value.trim() === '' || !regex.letras.test(apellido.value)) {
+        if (apellido.value.trim() === '' || apellido.value.trim().length < 2 || apellido.value.trim().length > 50 || !regex.letras.test(apellido.value)) {
             showError(apellido, 'Apellido obligatorio');
             valido = false;
         }
@@ -264,14 +273,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // TELÉFONO
-        if (telefono.value.trim() === '' || !regex.telefono.test(telefono.value)) {
-            showError(telefono, 'Teléfono obligatorio');
+        if (telefono.value.trim() !== '' && !regex.telefono.test(telefono.value)) {
+            showError(telefono, 'Teléfono inválido');
             valido = false;
         }
 
         // CORREO
-        if (correo.value.trim() === '' || !regex.correo.test(correo.value)) {
-            showError(correo, 'Correo obligatorio');
+        if (correo.value.trim() !== '' && !regex.correo.test(correo.value)) {
+            showError(correo, 'Correo inválido');
             valido = false;
         }
 

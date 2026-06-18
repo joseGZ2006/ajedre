@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // =========================
 
     const regex = {
-        cedula: /^\d{7,10}$/,
-        letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/,
+        cedula: /^[0-9]{7,8}$/,
+        letras: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}$/,
         telefono: /^\d{4}-\d{7}$/,
         correo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     };
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (cedula) {
         cedula.addEventListener('input', function() {
-            this.value = this.value.replace(/[^0-8]/g, '');
+            this.value = this.value.replace(/[^0-9]/g, '');
             if (this.value.length === 0) {
                 clearValidation(this);
                 return;
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!regex.cedula.test(this.value)) {
                 showError(this, 'Debe contener 8 dígitos numéricos');
             } else {
-                verificarCedulaDuplicada();
+                showValid(this);
             }
         });
     }
@@ -272,10 +272,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             if (this.value.trim().length < 2) {
-                showError(this, 'Debe tener al menos 2 letras');
-            } else if (!regex.letras.test(this.value)) {
-                showError(this, 'Solo letras y espacios');
-            } else {
+                showError(this, 'Debe tener entre 2 y 50 letras');
+            }
+            else if (this.value.trim().length > 50) {
+                showError(this, 'Debe tener entre 2 y 50 letras');
+            }
+            else if (!regex.letras.test(this.value)) {
+                showError(this, 'El nombre solo puede contener letras');
+            }
+            else {
                 showValid(this);
             }
         });
@@ -293,10 +298,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             if (this.value.trim().length < 2) {
-                showError(this, 'Debe tener al menos 2 letras');
-            } else if (!regex.letras.test(this.value)) {
-                showError(this, 'Solo letras y espacios');
-            } else {
+                showError(this, 'Debe tener entre 2 y 50 letras');
+            }
+            else if (this.value.trim().length > 50) {
+                showError(this, 'Debe tener entre 2 y 50 letras');
+            }
+            else if (!regex.letras.test(this.value)) {
+                showError(this, 'El nombre solo puede contener letras');
+            }
+            else {
                 showValid(this);
             }
         });

@@ -21,6 +21,8 @@ include_once("../../controlador/verificar_sesion.php");
     <?php include '../assets/inc/header.php'; ?>
 
 
+
+    <!-- CONTENIDO -->
     <div class="main-content">
         <div class="catalog-header">
          
@@ -80,7 +82,7 @@ include_once("../../controlador/verificar_sesion.php");
         </div>
     </div>
 </div>
-<?php include("../assets/inc/flash.php"); ?>
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>

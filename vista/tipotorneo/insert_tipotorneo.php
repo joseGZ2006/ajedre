@@ -33,7 +33,7 @@ include_once("../../controlador/verificar_sesion.php");
 
         <div class="form-card">
 
-            <form onsubmit="return validarTipotorneo(event)">
+            <form id="formRegistrar" method="POST" action="../../controlador/ctl_tipotorneo.php">
 
                 <h3 class="section-title">Datos del Tipo de Torneo</h3>
 
@@ -43,9 +43,23 @@ include_once("../../controlador/verificar_sesion.php");
                     <input type="text"
                            class="form-control"
                            id="nombre"
-                           placeholder="Ingrese el tipo de torneo">
+                           name="nombre"
+                           placeholder="Ingrese el tipo de torneo"
+                           >
 
                     <div class="invalid-feedback-real" id="nombreFeedback"></div>
+                </div>
+
+                <!-- TIPO -->
+                <div class="mb-3">
+                    <label class="form-label required-star">Tipo</label>
+                    <select class="form-select" id="tipo" name="tipo" >
+                        <option value="">Seleccione un tipo</option>
+                        <option value="individual">Individual</option>
+                        <option value="equipo">Equipo</option>
+                        <option value="mixto">Mixto</option>
+                    </select>
+                    <div class="invalid-feedback-real" id="tipoFeedback"></div>
                 </div>
 
                 <!-- BOTONES -->
@@ -55,7 +69,7 @@ include_once("../../controlador/verificar_sesion.php");
                         <i class="fas fa-eraser me-2"></i> Limpiar
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" name="registrar" value="registrar">
                         <i class="fas fa-save me-2"></i> Registrar
                     </button>
 
@@ -68,7 +82,7 @@ include_once("../../controlador/verificar_sesion.php");
     </div>
 
 </div>
-
+<?php include '../assets/inc/flash.php'; ?>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sweetalert2.all.min.js"></script>

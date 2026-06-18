@@ -71,31 +71,31 @@ if($fechaNacimiento) {
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Cédula</label>
-                        <input type="text" class="form-control" id="cedula" name="cedula" maxlength="10" value="<?php echo htmlspecialchars($cedula); ?>">
+                        <input type="text" class="form-control" id="cedula" name="cedula" maxlength="10" value="<?php echo htmlspecialchars($cedula); ?>" readonly>
                         <div class="invalid-feedback-real" id="cedulaFeedback"></div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" value="<?php echo htmlspecialchars($nombre); ?>">
+                        <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" value="<?php echo htmlspecialchars($nombre); ?>" readonly>
                         <div class="invalid-feedback-real" id="nombreFeedback"></div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Apellido</label>
-                        <input type="text" class="form-control" id="apellido" name="apellido" maxlength="50" value="<?php echo htmlspecialchars($apellido); ?>">
+                        <input type="text" class="form-control" id="apellido" name="apellido" maxlength="50" value="<?php echo htmlspecialchars($apellido); ?>" readonly>
                         <div class="invalid-feedback-real" id="apellidoFeedback"></div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Sexo</label>
-                        <div class="d-flex gap-4 mt-2">
+                        <div class="d-flex gap-4 mt-2" >
                             <div>
-                                <input type="radio" name="sexo" id="sexoM" value="M" <?php echo ($sexo == 'M') ? 'checked' : ''; ?>>
+                                <input type="radio" name="sexo" id="sexoM" value="M" <?php echo ($sexo == 'M') ? 'checked' : ''; ?> readonly>
                                 <label for="sexoM">Masculino</label>
                             </div>
                             <div>
-                                <input type="radio" name="sexo" id="sexoF" value="F" <?php echo ($sexo == 'F') ? 'checked' : ''; ?>>
+                                <input type="radio" name="sexo" id="sexoF" value="F" <?php echo ($sexo == 'F') ? 'checked' : ''; ?> readonly>
                                 <label for="sexoF">Femenino</label>
                             </div>
                         </div>
@@ -109,18 +109,18 @@ if($fechaNacimiento) {
                         <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" 
                             min="1900-01-01" max="<?php echo date('Y-m-d'); ?>"
                             value="<?php echo $fechaNacimiento; ?>"
-                            onchange="calcularCategoriaPorEdad()">
+                            onchange="calcularCategoriaPorEdad()" readonly>
                         <div class="invalid-feedback-real" id="fechaNacimientoFeedback"></div>
                     </div>
 
                     <div class="col-md-2 mb-3">
                         <label class="form-label">Edad</label>
-                        <input type="text" class="form-control" id="edad" name="edad" readonly value="<?php echo $edad; ?>">
+                        <input type="text" class="form-control" id="edad" name="edad" readonly value="<?php echo $edad; ?>" readonly>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label required-star">Categoría</label>
-                        <select class="form-select" id="categoria" name="categoria">
+                        <select disable class="form-select" id="categoria" name="categoria">
                             <option value="">Seleccionar categoría</option>
                             <option <?php echo ($categoria == 'Sub-6') ? 'selected' : ''; ?>>Sub-6</option>
                             <option <?php echo ($categoria == 'Sub-7') ? 'selected' : ''; ?>>Sub-7</option>
@@ -144,7 +144,7 @@ if($fechaNacimiento) {
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" maxlength="12" value="<?php echo htmlspecialchars($telefono); ?>" placeholder="0412-1234567">
+                        <input type="tel" class="form-control" id="telefono" name="telefono" maxlength="12" value="<?php echo htmlspecialchars($telefono); ?>" placeholder="0412-1234567" >
                         <div class="invalid-feedback-real" id="telefonoFeedback"></div>
                         <small class="text-muted">Formato: 0412-1234567</small>
                     </div>
@@ -153,7 +153,7 @@ if($fechaNacimiento) {
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label required-star">Localidad (Municipio)</label>
-                        <select class="form-select" id="localidadMunicipio" name="localidadMunicipio">
+                        <select class="form-select" id="localidadMunicipio" name="localidadMunicipio" readonly> 
                             <option value="">Seleccionar localidad</option>
                             <option <?php echo ($localidadMunicipio == 'San Felipe') ? 'selected' : ''; ?>>San Felipe</option>
                             <option <?php echo ($localidadMunicipio == 'Independencia') ? 'selected' : ''; ?>>Independencia</option>

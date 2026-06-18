@@ -359,7 +359,7 @@ class Usuario {
     #############################################################################
     ### ACTUALIZAR USUARIO ######################################################
     ############################################################################
-    public function ActualizarUsuario($idUsuario, $nombreUsuario, $contrasena, $rol, $estatus){
+    public function ActualizarUsuario($idUsuario, $nombreUsuario, $contrasena = null, $rol, $estatus){
         include("conexion.php"); 
 
         // Validaciones
@@ -434,7 +434,21 @@ class Usuario {
         }
     }
 
-    
+    public function registrarBitacoraSesion($idUsuario, $accion, $descripcion){
+        include("conexion.php");
+
+        $sql = $conex->prepare("
+            INSERT INTO BITACORA_SESION
+            (idUsuario, accion, descripcion, fecha)
+            VALUES (?, ?, ?, NOW())
+        ");
+
+        return $sql->execute([
+            $idUsuario,
+            $accion,
+            $descripcion
+        ]);
+    }
 
     ############################################################################
     ### VERIFICAR EXISTENCIA POR NOMBRE DE USUARIO #############################
